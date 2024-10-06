@@ -1,4 +1,4 @@
-package com.at.apuestatotal.ui.theme
+package com.at.apuestatotal.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
