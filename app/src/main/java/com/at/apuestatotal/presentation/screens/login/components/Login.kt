@@ -23,10 +23,7 @@ fun Login(navHostController: NavHostController, loginViewModel: LoginViewModel) 
 
 
             LaunchedEffect(Unit) {
-                navHostController.navigate(route = AppNavRoute.BetDetailNR.route) {
-                    popUpTo(AppNavRoute.LoginNR.route) { inclusive = true }
-                }
-
+                navHostController.navigate(route = AppNavRoute.LoadingNR.route)
             }
 
         }

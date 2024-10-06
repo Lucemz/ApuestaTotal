@@ -1,6 +1,5 @@
 package com.at.apuestatotal.domain.useCase.login
 
-import com.at.apuestatotal.data.repository.AuthRepositoryImpl
 import com.at.apuestatotal.domain.model.ErrorInfo
 import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.model.login.User

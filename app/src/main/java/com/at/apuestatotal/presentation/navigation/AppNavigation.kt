@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.at.apuestatotal.presentation.screens.LoadingScreen
 import com.at.apuestatotal.presentation.screens.betDetail.BetDetailScreen
 import com.at.apuestatotal.presentation.screens.login.LoginScreen
 
@@ -26,7 +27,9 @@ fun AppNavigation(
         composable(route = AppNavRoute.LoginNR.route) {
             LoginScreen(navHostController, paddingValues = innerPadding)
         }
-
+        composable(route = AppNavRoute.LoadingNR.route) {
+            LoadingScreen(navHostController, paddingValues = innerPadding)
+        }
         composable(route = AppNavRoute.BetDetailNR.route) {
             BetDetailScreen(navHostController)
         }
@@ -36,6 +39,7 @@ fun AppNavigation(
 sealed class AppNavRoute(val route: String) {
 
     object LoginNR : AppNavRoute("LoginNR")
+    object LoadingNR : AppNavRoute("LoadingNR")
     object BetDetailNR : AppNavRoute("BetDetailNR")
 
 
