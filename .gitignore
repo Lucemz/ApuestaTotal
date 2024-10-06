@@ -1,0 +1,57 @@
+# Android
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.so
+*.log
+*.lock
+*.gz
+*.zip
+*.jar
+*.war
+*.ear
+*.iml
+
+# Android Studio
+.gradle/
+.idea/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Gradle
+.gradle/
+build/
+local.properties
+!gradle-wrapper.jar
+gradle-app.setting
+
+# Log/OS Files
+*.log
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. Firebase)
+google-services.json
+
+# Android Profiling
+*.hprof
+
+# Miscellaneous
+*.lock
+*.tmp
+*.temp
+*.bak
+*.swp
+*~.nib
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+*.jscpd-report.xml
