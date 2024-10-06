@@ -89,7 +89,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
-//lottieFiles
+    //lottieFiles
     implementation (libs.lottie.compose)
 
 

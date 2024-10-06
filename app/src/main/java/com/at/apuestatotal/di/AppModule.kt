@@ -2,6 +2,8 @@ package com.at.apuestatotal.di
 
 import android.app.Application
 import android.content.Context
+import com.at.apuestatotal.data.repository.AuthRepositoryImpl
+import com.at.apuestatotal.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,4 +16,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideApplicationContext(application: Application): Context = application
+
+    @Provides
+    fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 }

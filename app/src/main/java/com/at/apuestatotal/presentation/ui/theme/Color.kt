@@ -11,18 +11,18 @@ object Primary {
 
 // Secondary Palette
 object Secondary {
-    val GreyPrime = Color(0xFFA0A0A0)
+    val GrayPrime = Color(0xFFA0A0A0)
     val Yellow = Color(0xFFFFC700)
     val RedSecondary = Color(0xFFFF0000)
     val Green = Color(0xFF009746)
     val Blue = Color(0xFF147AFF)
 }
 
-// Greys Palette
-object Greys {
-    val Grey = Color(0xFF505050)
-    val Grey2 = Color(0xFF677182)
-    val Grey3 = Color(0xFFEDEDED)
-    val Grey4 = Color(0xFFD0D0D0)
-    val Grey5 = Color(0xFFFAFAFA)
+// Grays Palette
+object Grays {
+    val Gray = Color(0xFF505050)
+    val Gray2 = Color(0xFF677182)
+    val Gray3 = Color(0xFFEDEDED)
+    val Gray4 = Color(0xFFD0D0D0)
+    val Gray5 = Color(0xFFFAFAFA)
 }

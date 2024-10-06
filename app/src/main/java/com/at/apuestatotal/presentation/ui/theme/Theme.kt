@@ -1,6 +1,5 @@
 package com.at.apuestatotal.presentation.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,9 +8,8 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.example.ui.theme.Greys
+import com.example.ui.theme.Grays
 import com.example.ui.theme.Primary
 import com.example.ui.theme.Secondary
 
@@ -48,15 +46,15 @@ private val LightColorScheme = lightColorScheme(
 val ApuestaTotalScheme = lightColorScheme(
     primary = Primary.Red,                  // Rojo primario
     onPrimary = Primary.White,              // Texto sobre el primario en blanco
-    primaryContainer = Greys.Grey4,         // Fondo alternativo para primario
+    primaryContainer = Grays.Gray4,         // Fondo alternativo para primario
 
     secondary = Secondary.Blue,             // Azul para elementos secundarios
     onSecondary = Primary.White,            // Texto sobre el color secundario en blanco
-    secondaryContainer = Greys.Grey3,       // Fondo alternativo para el secundario
+    secondaryContainer = Grays.Gray3,       // Fondo alternativo para el secundario
 
     tertiary = Secondary.Yellow,            // Amarillo para elementos terciarios
     onTertiary = Primary.Black,             // Texto sobre el terciario en negro
-    tertiaryContainer = Greys.Grey2,        // Fondo alternativo para el terciario
+    tertiaryContainer = Grays.Gray2,        // Fondo alternativo para el terciario
 
     surface = Primary.White,                // Superficies en blanco
     onSurface = Primary.Black,              // Texto sobre las superficies en negro
@@ -66,7 +64,7 @@ val ApuestaTotalScheme = lightColorScheme(
 
     error = Secondary.RedSecondary,         // Color de error en rojo secundario
     onError = Primary.White,                // Texto sobre el error en blanco
-    errorContainer = Greys.Grey             // Fondo alternativo para errores
+    errorContainer = Grays.Gray             // Fondo alternativo para errores
 )
 
 @Composable
