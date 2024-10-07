@@ -4,11 +4,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.at.apuestatotal.presentation.screens.betDetail.components.BetDetailContent
+import com.at.apuestatotal.presentation.screens.betDetail.components.BetHistoryContent
 import com.at.apuestatotal.presentation.screens.betDetail.components.BetHistoryViewModel
 
 @Composable
-fun BetDetailScreen(
+fun BetHistoryScreen(
     navHostController: NavHostController,
     betHistoryViewModel: BetHistoryViewModel = hiltViewModel()
 ) {
@@ -16,7 +16,7 @@ fun BetDetailScreen(
     Scaffold(
         topBar = {},
         content = {
-            BetDetailContent(navHostController, it, betHistoryViewModel)
+            BetHistoryContent(navHostController, it, betHistoryViewModel)
         },
         bottomBar = {}
     )

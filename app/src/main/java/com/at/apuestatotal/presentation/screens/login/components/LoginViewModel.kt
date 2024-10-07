@@ -24,6 +24,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
+   // init {
+   //     email = "test@gmail.com"
+   //     password = "123"
+   //     login()
+   // }
+
     fun login() {
         viewModelScope.launch {
             val user = User("", email, password)

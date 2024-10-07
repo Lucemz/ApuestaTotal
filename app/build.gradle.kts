@@ -92,6 +92,9 @@ dependencies {
     //lottieFiles
     implementation (libs.lottie.compose)
 
+    //Navigation
+    implementation ("com.google.accompanist:accompanist-navigation-animation:0.30.1")
+
 
 
     // TEST

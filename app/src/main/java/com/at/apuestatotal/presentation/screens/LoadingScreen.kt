@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
@@ -27,7 +26,6 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.at.apuestatotal.R
 import com.at.apuestatotal.presentation.navigation.AppNavRoute
-import com.at.apuestatotal.presentation.screens.login.LoginScreen
 import com.at.apuestatotal.presentation.ui.theme.ApuestaTotalTheme
 import com.at.apuestatotal.presentation.ui.theme.TextStyles
 
@@ -40,7 +38,7 @@ fun LoadingScreen(
     LaunchedEffect(Unit) {
 
         kotlinx.coroutines.delay(5000L)
-        navHostController.navigate(route = AppNavRoute.BetDetailNR.route) {
+        navHostController.navigate(route = AppNavRoute.BetHistoryNR.route) {
             popUpTo(AppNavRoute.LoginNR.route) { inclusive = true }
         }
     }
