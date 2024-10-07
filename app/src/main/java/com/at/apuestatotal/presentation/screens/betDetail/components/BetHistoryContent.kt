@@ -47,7 +47,7 @@ fun BetHistoryContent(
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 35.dp, bottom = 20.dp)
@@ -127,6 +127,7 @@ fun BetHistoryContent(
 
 
         }
+
 
 
         CardBetHistory(betHistoryViewModel.betHistoryListFiltered)

@@ -33,7 +33,7 @@ class BetHistoryViewModel @Inject constructor(private val getAllHistoryBetsUseCa
                 }
 
                 else -> {
-                    // Manejo de errores si es necesario
+
                 }
             }
         }
