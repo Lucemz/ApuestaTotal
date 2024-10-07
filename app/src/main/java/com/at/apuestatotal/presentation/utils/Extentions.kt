@@ -18,8 +18,14 @@ fun Double.redondearString(decimales: Int = 2): String {
     return format.format(this)
 }
 
+fun <T> MutableList<T>.addOrRemove(item: T) {
+    if (this.contains(item)) {
+        this.remove(item)
+    } else {
+        this.add(item)
 
-
+    }
+}
 
 
 fun mapDate(dateString: String, formatType: Int = 1): String {

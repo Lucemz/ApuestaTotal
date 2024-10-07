@@ -22,6 +22,19 @@ fun betStatusMaperTitle(status: String): String {
     }
 }
 
+fun betAllMaperTitle(title: String): String {
+    return when (title) {
+        LOST -> "Perdido"
+        WON -> "Ganado"
+        OPEN -> "Abierto"
+        CASHOUT -> "Cashout"
+        SIMPLE -> "Simple"
+        MULTIPLE -> "Multiple"
+        SYSTEM -> "Sistema"
+        else -> "N/A"
+    }
+}
+
 fun betStatusMaperColor(status: String): Color {
     return when (status) {
         LOST -> Secondary.RedSecondary
@@ -36,7 +49,7 @@ fun betTypeMaperTitle(status: String): String {
     return when (status) {
         SIMPLE -> "Simple"
         MULTIPLE -> "Multiple"
-        SYSTEM-> "Sistema"
+        SYSTEM -> "Sistema"
         else -> "N/A"
     }
 }

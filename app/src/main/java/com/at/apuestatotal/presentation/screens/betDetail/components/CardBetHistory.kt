@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -73,70 +74,74 @@ const val TYPE3 = 3
 @Composable
 fun CardBetHistory(betList: List<BetHistory>) {
 
+    Column(modifier = Modifier.fillMaxSize()) {
 
-    LazyColumn(
-        modifier = Modifier
-            .animateContentSize()
-            .fillMaxWidth()
-            .padding(top = 10.dp, start = 15.dp, end = 15.dp)
-            .clip(RoundedCornerShape(size = 15.dp))
-            .background(Grays.Gray6)
-            .padding(top = 10.dp, start = 10.dp, end = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        items(betList) { betHistory ->
-            var estado by remember { mutableStateOf(TYPE1) }
-            val colorEstado = betStatusMaperColor(betHistory.status)
-            Card(
-                modifier = Modifier
-                    .width(328.dp)
-                    .clip(RoundedCornerShape(size = 15.dp))
-                    .border(
-                        width = 1.dp,
-                        color = colorEstado,
-                        shape = RoundedCornerShape(size = 15.dp)
-                    )
-                    //.shadow(4.dp)
-                    .background(Primary.White, shape = RoundedCornerShape(size = 15.dp))
-                    .animateContentSize(),
-                colors = CardDefaults.cardColors(containerColor = Primary.White),
+        LazyColumn(
+            modifier = Modifier
+                .animateContentSize()
+                .fillMaxWidth()
+                .padding(top = 10.dp, start = 18.dp, end = 18.dp, bottom = 10.dp)
+                .clip(RoundedCornerShape(size = 25.dp))
+                .background(Grays.Gray6)
+                .padding(13.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            itemsIndexed(betList) { index, betHistory ->
+                var estado by remember { mutableStateOf(TYPE1) }
+                val colorEstado = betStatusMaperColor(betHistory.status)
 
-                ) {
+                Card(
+                    modifier = Modifier
+                        .width(328.dp)
+                        .clip(RoundedCornerShape(size = 15.dp))
+                        .border(
+                            width = 1.dp,
+                            color = colorEstado,
+                            shape = RoundedCornerShape(size = 15.dp)
+                        )
+                        //.shadow(4.dp)
+                        .background(Primary.White, shape = RoundedCornerShape(size = 15.dp))
+                        .animateContentSize(),
+                    colors = CardDefaults.cardColors(containerColor = Primary.White),
+
+                    ) {
 
 
-                when (estado) {
-                    TYPE1 -> {
-                        type1(
-                            betHistory,
-                            onClick = { estado = TYPE2 },
-                            onLongClick = { estado = TYPE3 })
+                    when (estado) {
+                        TYPE1 -> {
+                            type1(
+                                betHistory,
+                                onClick = { estado = TYPE2 },
+                                onLongClick = { estado = TYPE3 })
+                        }
+
+                        TYPE2 -> {
+                            type2(
+                                betHistory,
+                                onClick = { estado = TYPE3 },
+                                onClick2 = { estado = TYPE1 })
+                        }
+
+                        TYPE3 -> {
+                            type3(
+                                betHistory,
+                                onClick = { estado = TYPE2 },
+                                onLongClick = { estado = TYPE1 })
+                        }
                     }
 
-                    TYPE2 -> {
-                        type2(
-                            betHistory,
-                            onClick = { estado = TYPE3 },
-                            onClick2 = { estado = TYPE1 })
-                    }
 
-                    TYPE3 -> {
-                        type3(
-                            betHistory,
-                            onClick = { estado = TYPE2 },
-                            onLongClick = { estado = TYPE1 })
-                    }
+                }
+
+                if (index != betList.lastIndex) {
+                    Spacer(modifier = Modifier.padding(top = 7.dp))
                 }
 
 
             }
-
-            VerticalDivider(modifier = Modifier.padding(vertical = 10.dp))
-
-
         }
+
     }
-
-
 }
 
 

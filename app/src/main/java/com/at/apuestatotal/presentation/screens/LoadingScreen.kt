@@ -37,7 +37,7 @@ fun LoadingScreen(
 
     LaunchedEffect(Unit) {
 
-        kotlinx.coroutines.delay(5000L)
+        //kotlinx.coroutines.delay(5000L)
         navHostController.navigate(route = AppNavRoute.BetHistoryNR.route) {
             popUpTo(AppNavRoute.LoginNR.route) { inclusive = true }
         }
