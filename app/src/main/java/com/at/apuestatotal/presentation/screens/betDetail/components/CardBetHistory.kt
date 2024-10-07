@@ -77,7 +77,7 @@ const val TYPE2 = 2
 const val TYPE3 = 3
 
 @Composable
-fun CardBetHistory(betList: List<BetHistory>) {
+fun CardBetHistory(betList: List<BetHistory>, update: Boolean) {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -87,12 +87,15 @@ fun CardBetHistory(betList: List<BetHistory>) {
                 .padding(top = 10.dp, start = 18.dp, end = 18.dp, bottom = 10.dp)
                 .clip(RoundedCornerShape(size = 25.dp))
                 .background(Grays.Gray6)
-                .padding(13.dp).animateContentSize(),
+                .padding(13.dp)
+                .animateContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             itemsIndexed(betList) { index, betHistory ->
-
                 var estado by remember { mutableStateOf(TYPE1) }
+                update.let {
+                    estado = TYPE1
+                }
                 val colorEstado = betStatusMaperColor(betHistory.status)
 
                 Card(
@@ -121,6 +124,7 @@ fun CardBetHistory(betList: List<BetHistory>) {
                                     onLongClick = { estado = TYPE3 }
                                 )
                             }
+
                             TYPE2 -> {
                                 type2(
                                     betHistory,
@@ -128,6 +132,7 @@ fun CardBetHistory(betList: List<BetHistory>) {
                                     onClick2 = { estado = TYPE1 }
                                 )
                             }
+
                             TYPE3 -> {
                                 type3(
                                     betHistory,
@@ -647,7 +652,7 @@ private fun Preview() {
                 .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardBetHistory(betListHistory)//rememberNavController(), PaddingValues()) }
+            CardBetHistory(betListHistory, true)//rememberNavController(), PaddingValues()) }
 
         }
     }

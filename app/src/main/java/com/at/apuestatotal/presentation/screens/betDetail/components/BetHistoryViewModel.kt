@@ -32,6 +32,7 @@ class BetHistoryViewModel @Inject constructor(private val getAllHistoryBetsUseCa
 
     var textFilter by mutableStateOf("")
     var isFilterShow by mutableStateOf(false)
+    var updateList by mutableStateOf(false)
 
     val listFiltros = listOf(
         LOST,
@@ -65,28 +66,28 @@ class BetHistoryViewModel @Inject constructor(private val getAllHistoryBetsUseCa
 
         betHistoryListFiltered = betHistoryList.filter { bet ->
 
-            val cumpleFiltrosSeleccionados = filtrosSeleccionados.isEmpty() || filtrosSeleccionados.any { filtro ->
-                bet.status == filtro || bet.type== filtro
-            }
+            val cumpleFiltrosSeleccionados =
+                filtrosSeleccionados.isEmpty() || filtrosSeleccionados.any { filtro ->
+                    bet.status == filtro || bet.type == filtro
+                }
 
 
-            val cumpleFiltroDeTexto = palabrasBusqueda.isEmpty() || palabrasBusqueda.all { palabra ->
-                betAllMaperTitle(bet.status).contains(palabra, ignoreCase = true) ||
-                        betAllMaperTitle(bet.type).contains(palabra, ignoreCase = true) ||
-                        bet.betDetails.any { betDetail ->
-                            betDetail.betNivel.contains(palabra, ignoreCase = true) ||
-                                    betDetail.betSelections.any { selection ->
-                                        selection.eventName.contains(palabra, ignoreCase = true)
-                                    }
-                        }
-            }
+            val cumpleFiltroDeTexto =
+                palabrasBusqueda.isEmpty() || palabrasBusqueda.all { palabra ->
+                    betAllMaperTitle(bet.status).contains(palabra, ignoreCase = true) ||
+                            betAllMaperTitle(bet.type).contains(palabra, ignoreCase = true) ||
+                            bet.betDetails.any { betDetail ->
+                                betDetail.betNivel.contains(palabra, ignoreCase = true) ||
+                                        betDetail.betSelections.any { selection ->
+                                            selection.eventName.contains(palabra, ignoreCase = true)
+                                        }
+                            }
+                }
 
             cumpleFiltrosSeleccionados && cumpleFiltroDeTexto
         }
+        updateList = !updateList
     }
-
-
-
 
 
 }

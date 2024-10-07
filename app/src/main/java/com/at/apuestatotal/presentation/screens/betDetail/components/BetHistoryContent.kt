@@ -206,7 +206,7 @@ fun BetHistoryContent(
 
 
 
-        CardBetHistory(betHistoryViewModel.betHistoryListFiltered)
+        CardBetHistory(betHistoryViewModel.betHistoryListFiltered, betHistoryViewModel.updateList)
 
 
     }
