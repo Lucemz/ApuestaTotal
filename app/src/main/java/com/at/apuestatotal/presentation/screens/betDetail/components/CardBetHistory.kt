@@ -1,6 +1,11 @@
 package com.at.apuestatotal.presentation.screens.betDetail.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -78,15 +83,15 @@ fun CardBetHistory(betList: List<BetHistory>) {
 
         LazyColumn(
             modifier = Modifier
-                .animateContentSize()
                 .fillMaxWidth()
                 .padding(top = 10.dp, start = 18.dp, end = 18.dp, bottom = 10.dp)
                 .clip(RoundedCornerShape(size = 25.dp))
                 .background(Grays.Gray6)
-                .padding(13.dp),
+                .padding(13.dp).animateContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             itemsIndexed(betList) { index, betHistory ->
+
                 var estado by remember { mutableStateOf(TYPE1) }
                 val colorEstado = betStatusMaperColor(betHistory.status)
 
@@ -99,51 +104,48 @@ fun CardBetHistory(betList: List<BetHistory>) {
                             color = colorEstado,
                             shape = RoundedCornerShape(size = 15.dp)
                         )
-                        //.shadow(4.dp)
                         .background(Primary.White, shape = RoundedCornerShape(size = 15.dp))
                         .animateContentSize(),
                     colors = CardDefaults.cardColors(containerColor = Primary.White),
-
+                ) {
+                    AnimatedVisibility(
+                        visible = estado == TYPE1 || estado == TYPE2 || estado == TYPE3,
+                        enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                        exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
                     ) {
-
-
-                    when (estado) {
-                        TYPE1 -> {
-                            type1(
-                                betHistory,
-                                onClick = { estado = TYPE2 },
-                                onLongClick = { estado = TYPE3 })
-                        }
-
-                        TYPE2 -> {
-                            type2(
-                                betHistory,
-                                onClick = { estado = TYPE3 },
-                                onClick2 = { estado = TYPE1 })
-                        }
-
-                        TYPE3 -> {
-                            type3(
-                                betHistory,
-                                onClick = { estado = TYPE2 },
-                                onLongClick = { estado = TYPE1 })
+                        when (estado) {
+                            TYPE1 -> {
+                                type1(
+                                    betHistory,
+                                    onClick = { estado = TYPE2 },
+                                    onLongClick = { estado = TYPE3 }
+                                )
+                            }
+                            TYPE2 -> {
+                                type2(
+                                    betHistory,
+                                    onClick = { estado = TYPE3 },
+                                    onClick2 = { estado = TYPE1 }
+                                )
+                            }
+                            TYPE3 -> {
+                                type3(
+                                    betHistory,
+                                    onClick = { estado = TYPE2 },
+                                    onLongClick = { estado = TYPE1 }
+                                )
+                            }
                         }
                     }
-
-
                 }
 
                 if (index != betList.lastIndex) {
                     Spacer(modifier = Modifier.padding(top = 7.dp))
                 }
-
-
             }
         }
-
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
