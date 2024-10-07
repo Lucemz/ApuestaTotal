@@ -88,7 +88,7 @@ fun BetHistoryContent(
         ) {
             MCBaseTextField(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(1f)
                     .height(36.dp),
                 hint = "Buscar",
                 textValue = textfilter,
@@ -121,12 +121,12 @@ fun BetHistoryContent(
             Row(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .weight(1f)
+                    //.weight(1f)
                     .padding(start = 15.dp)
                     .height(36.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(color = if (isFilterShow) Primary.Red else Grays.Gray4)
-                    .padding(horizontal = 3.dp)
+                    .padding(horizontal = 7.dp)
                     .clickable {
 
                         if (cantItems > 0 ){
