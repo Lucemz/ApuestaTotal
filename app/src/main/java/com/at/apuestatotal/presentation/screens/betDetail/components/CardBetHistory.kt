@@ -65,6 +65,7 @@ import com.at.apuestatotal.presentation.ui.theme.TextStyles
 import com.at.apuestatotal.presentation.utils.OPEN
 import com.at.apuestatotal.presentation.utils.betStatusMaperColor
 import com.at.apuestatotal.presentation.utils.betStatusMaperTitle
+import com.at.apuestatotal.presentation.utils.betTypeMaperIcon
 import com.at.apuestatotal.presentation.utils.betTypeMaperTitle
 import com.at.apuestatotal.presentation.utils.mapDate
 import com.at.apuestatotal.presentation.utils.redondearString
@@ -78,6 +79,12 @@ const val TYPE3 = 3
 
 @Composable
 fun CardBetHistory(betList: List<BetHistory>, update: Boolean) {
+
+    var isShowAlertBetCategory by remember { mutableStateOf(false) }
+
+    if (isShowAlertBetCategory) {
+        AlertBetCategory(onDismissRequest = { isShowAlertBetCategory = false })
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -93,8 +100,11 @@ fun CardBetHistory(betList: List<BetHistory>, update: Boolean) {
         ) {
             itemsIndexed(betList) { index, betHistory ->
                 var estado by remember { mutableStateOf(TYPE1) }
+                var updateState by remember { mutableStateOf(update) }
                 update.let {
-                    estado = TYPE1
+                    if (updateState != update) {
+                        estado = TYPE1
+                    }
                 }
                 val colorEstado = betStatusMaperColor(betHistory.status)
 
@@ -129,7 +139,8 @@ fun CardBetHistory(betList: List<BetHistory>, update: Boolean) {
                                 type2(
                                     betHistory,
                                     onClick = { estado = TYPE3 },
-                                    onClick2 = { estado = TYPE1 }
+                                    onClick2 = { estado = TYPE1 },
+                                    onIconClick = { isShowAlertBetCategory = true }
                                 )
                             }
 
@@ -137,7 +148,8 @@ fun CardBetHistory(betList: List<BetHistory>, update: Boolean) {
                                 type3(
                                     betHistory,
                                     onClick = { estado = TYPE2 },
-                                    onLongClick = { estado = TYPE1 }
+                                    onLongClick = { estado = TYPE1 },
+                                    onIconClick = { isShowAlertBetCategory = true }
                                 )
                             }
                         }
@@ -242,7 +254,12 @@ private fun type1(betHistory: BetHistory, onClick: () -> Unit, onLongClick: () -
 }
 
 @Composable
-private fun type2(betHistory: BetHistory, onClick: () -> Unit, onClick2: () -> Unit) {
+private fun type2(
+    betHistory: BetHistory,
+    onClick: () -> Unit,
+    onClick2: () -> Unit,
+    onIconClick: () -> Unit
+) {
 
     val colorEstado = betStatusMaperColor(betHistory.status)
 
@@ -342,23 +359,46 @@ private fun type2(betHistory: BetHistory, onClick: () -> Unit, onClick2: () -> U
 
             }
 
-            Button(
+            Row(
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 11.dp, bottom = 20.dp)
-                    .width(89.dp)
-                    .height(20.dp),
-                contentPadding = PaddingValues(0.dp),
-                content = {
+                    .fillMaxWidth()
+                    .padding(top = 6.dp, bottom = 6.dp, start = 15.dp, end = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    modifier = Modifier
+                        .width(89.dp)
+                        .height(20.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    content = {
+                        Icon(
+                            modifier = Modifier,
+                            painter = painterResource(R.drawable.ic_detail_mini),
+                            contentDescription = ""
+                        )
+                        Text("ver mas", style = TextStyles.Card.subtitle2)
+                    },
+                    onClick = { onClick() },
+                    colors = ButtonDefaults.buttonColors(colorEstado)
+                )
+
+                val image =
+                    betHistory.betDetails.firstOrNull()?.betNivel?.let { betTypeMaperIcon(it) }
+
+
+                if (image != null) {
+
                     Icon(
-                        modifier = Modifier,
-                        painter = painterResource(R.drawable.ic_detail_mini),
-                        contentDescription = ""
+                        modifier = Modifier.clickable { onIconClick() },
+                        painter = painterResource(image),
+                        contentDescription = "",
+                        tint = colorEstado
                     )
-                    Text("ver mas", style = TextStyles.Card.subtitle2)
-                },
-                onClick = { onClick() },
-                colors = ButtonDefaults.buttonColors(colorEstado)
-            )
+                }
+
+            }
+
 
         }
     }
@@ -371,7 +411,8 @@ private fun type2(betHistory: BetHistory, onClick: () -> Unit, onClick2: () -> U
 private fun type3(
     betHistory: BetHistory,
     onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
+    onIconClick: () -> Unit
 ) {
 
     val colorEstado = betStatusMaperColor(betHistory.status)
@@ -398,6 +439,23 @@ private fun type3(
                 color = Primary.White,
                 textAlign = TextAlign.Center,
             )
+
+            val image =
+                betHistory.betDetails.firstOrNull()?.betNivel?.let { betTypeMaperIcon(it) }
+
+
+            if (image != null) {
+
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 10.dp)
+                        .clickable { onIconClick() },
+                    painter = painterResource(image),
+                    contentDescription = "",
+                    tint = Primary.White
+                )
+            }
 
         }
 

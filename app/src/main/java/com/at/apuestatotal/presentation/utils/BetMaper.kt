@@ -1,6 +1,7 @@
 package com.at.apuestatotal.presentation.utils
 
 import androidx.compose.ui.graphics.Color
+import com.at.apuestatotal.R
 import com.example.ui.theme.Secondary
 
 const val LOST = "LOST"
@@ -11,6 +12,13 @@ const val CASHOUT = "CASHOUT"
 const val SIMPLE = "SIMPLE"
 const val MULTIPLE = "MULTIPLE"
 const val SYSTEM = "SYSTEM"
+
+const val DONATELO = "Donatelo"
+const val CAZAFIJAS = "CazaFijas"
+const val CAPO = "Capo"
+const val MASTER = "Master"
+const val KING = "King"
+const val LEYENDA = "Leyenda"
 
 fun betStatusMaperTitle(status: String): String {
     return when (status) {
@@ -51,5 +59,37 @@ fun betTypeMaperTitle(status: String): String {
         MULTIPLE -> "Multiple"
         SYSTEM -> "Sistema"
         else -> "N/A"
+    }
+}
+
+fun betTypeMaperIcon(type: String): Int? {
+    return when (type) {
+        DONATELO -> {
+            R.drawable.donatelo
+        }
+
+        CAZAFIJAS -> {
+            R.drawable.cazafijas
+        }
+
+        CAPO -> {
+            R.drawable.capo
+        }
+
+        MASTER -> {
+            R.drawable.master
+        }
+
+        KING -> {
+            R.drawable.king
+        }
+
+        LEYENDA -> {
+            R.drawable.leyenda
+        }
+
+        else -> {
+            null
+        }
     }
 }
