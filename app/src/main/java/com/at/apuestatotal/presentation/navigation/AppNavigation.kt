@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.at.apuestatotal.presentation.screens.LoadingScreen
 import com.at.apuestatotal.presentation.screens.betDetail.BetHistoryScreen
 import com.at.apuestatotal.presentation.screens.login.LoginScreen
+import com.at.apuestatotal.presentation.screens.mainMenu.MainMenuScreen
 
 const val MAIN_ROUTE = "mainRoute"
 
@@ -46,6 +47,9 @@ fun AppNavigation(
         composable(route = AppNavRoute.BetHistoryNR.route) {
             BetHistoryScreen(navHostController)
         }
+        composable(route = AppNavRoute.MainMenuNR.route) {
+            MainMenuScreen()
+        }
     }
 }
 
@@ -54,6 +58,7 @@ sealed class AppNavRoute(val route: String) {
     object LoginNR : AppNavRoute("LoginNR")
     object LoadingNR : AppNavRoute("LoadingNR")
     object BetHistoryNR : AppNavRoute("BetHistoryNR")
+    object MainMenuNR : AppNavRoute("MainMenuNR")
 
 
 }

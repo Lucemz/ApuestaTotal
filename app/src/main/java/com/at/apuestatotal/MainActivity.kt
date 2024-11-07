@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     AppNavigation(
                         navHostController = navHostController,
                         innerPadding = innerPadding,
-                        startDestination = AppNavRoute.LoginNR.route
+                        startDestination = AppNavRoute.MainMenuNR.route
                     )
 
                 }

@@ -8,6 +8,7 @@ plugins {
 
 }
 
+
 android {
     namespace = "com.at.apuestatotal"
     compileSdk = 34
@@ -35,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -80,6 +81,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)
 
+    //Retrofit
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     //Gson
     implementation (libs.gson)
@@ -91,6 +96,12 @@ dependencies {
 
     //lottieFiles
     implementation (libs.lottie.compose)
+
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-gif:2.2.2")
+
 
 
 

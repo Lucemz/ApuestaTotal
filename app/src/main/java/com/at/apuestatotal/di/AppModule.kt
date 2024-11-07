@@ -3,8 +3,10 @@ package com.at.apuestatotal.di
 import android.app.Application
 import android.content.Context
 import com.at.apuestatotal.data.repository.AuthRepositoryImpl
+import com.at.apuestatotal.data.repository.BannerRepositoryImpl
 import com.at.apuestatotal.data.repository.BetRepositoryImpl
 import com.at.apuestatotal.domain.repository.AuthRepository
+import com.at.apuestatotal.domain.repository.BannerRepository
 import com.at.apuestatotal.domain.repository.BetRepository
 import dagger.Module
 import dagger.Provides
@@ -24,4 +26,8 @@ object AppModule {
 
     @Provides
     fun provideBetRepository(impl: BetRepositoryImpl): BetRepository = impl
+
+    @Provides
+    fun provideBannerRepository(impl: BannerRepositoryImpl) : BannerRepository = impl
+
 }
