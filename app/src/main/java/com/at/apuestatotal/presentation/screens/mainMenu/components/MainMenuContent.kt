@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -50,8 +52,15 @@ fun MainMenuContent(
     mainMenuViewModel: MainMenuViewModel = hiltViewModel()
 ) {
 
-    val listDeportivaBanner = mainMenuViewModel.listaBanerHomeDeportiva
-    val listCasinoBanner = mainMenuViewModel.listaBanerHomeCasino
+    val listDeportivaBanner = mainMenuViewModel.listBannerHomeSports
+    val listCasinoBanner = mainMenuViewModel.listBannerHomeCasino
+    val listTournamentsBanner = mainMenuViewModel.listBannerHomeTournament
+    val listCasinoLiveBanner = mainMenuViewModel.listBannerHomeCasinoLive
+    val listJackpotBanner = mainMenuViewModel.listBannerHomeJackpots
+    val listPromotionBanner = mainMenuViewModel.listBannerHomePromotions
+
+
+
 
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
@@ -64,21 +73,20 @@ fun MainMenuContent(
         }
         .build()
 
-
-
-
     Column(
         modifier = Modifier
             .padding(paddingValues = paddingValues)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralIndexSelected?.bannerConfig?.image}"
+        val link =
+            "https://www.apuestatotal.com${mainMenuViewModel.bannerHomeCentralIndexSelected?.bannerConfig?.image}"
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(130.dp)
                 .clickable {
-                    mainMenuViewModel.getHomeDeportivasBanner()
+                    mainMenuViewModel.getHomeCentralBanner()
                 },
             model = ImageRequest.Builder(context)
                 .data(link)
@@ -90,7 +98,7 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
             error = painterResource(R.drawable.master),
             contentScale = ContentScale.FillBounds,
         )
-
+        Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,10 +121,9 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
             )
 
         }
-
+        Spacer(modifier = Modifier.height(10.dp))
         LazyRow(
             modifier = Modifier
-                .padding(top = 10.dp)
                 .fillMaxWidth()
                 .height(170.dp)
         ) {
@@ -129,8 +136,7 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
                     .shadow(1.dp, shape = RoundedCornerShape(10.dp))
                     .clickable { }) {
                     val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
-                    Log.e("imagenLink", link)
-
+                    //    Log.e("imagenLink", link)
 
 
                     AsyncImage(
@@ -146,22 +152,6 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
                         modifier = Modifier.fillMaxSize()
                     )
 
-
-                    /*   AsyncImage(
-                           modifier = Modifier.fillMaxSize(),
-                           model = link,
-                           contentDescription = "Imagen desde URL",
-                           placeholder = painterResource(R.drawable.ap_logo),
-                           error = painterResource(R.drawable.master),
-                           contentScale = ContentScale.Crop
-                       )*/
-
-                    /*  Image(
-                          modifier = Modifier.fillMaxSize(),
-                          painter = painterResource(R.drawable.ic_at_mini),
-                          contentScale = ContentScale.Crop,
-                          contentDescription = ""
-                      )*/
                 }
 
 
@@ -170,11 +160,11 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
 
         }
 
-
+        Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 10.dp),
+                .padding(horizontal = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -193,9 +183,9 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
             )
 
         }
+        Spacer(modifier = Modifier.height(10.dp))
         LazyRow(
             modifier = Modifier
-                .padding(top = 10.dp)
                 .fillMaxWidth()
                 .height(170.dp)
         ) {
@@ -208,9 +198,6 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
                     .shadow(1.dp, shape = RoundedCornerShape(10.dp))
                     .clickable { }) {
                     val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
-                    Log.e("imagenLink", link)
-
-
 
                     AsyncImage(
                         model = ImageRequest.Builder(context)
@@ -226,29 +213,333 @@ val link = "https://www.apuestatotal.com${mainMenuViewModel.banerHomeCentralInde
                     )
 
 
-                    /*   AsyncImage(
-                           modifier = Modifier.fillMaxSize(),
-                           model = link,
-                           contentDescription = "Imagen desde URL",
-                           placeholder = painterResource(R.drawable.ap_logo),
-                           error = painterResource(R.drawable.master),
-                           contentScale = ContentScale.Crop
-                       )*/
-
-                    /*  Image(
-                          modifier = Modifier.fillMaxSize(),
-                          painter = painterResource(R.drawable.ic_at_mini),
-                          contentScale = ContentScale.Crop,
-                          contentDescription = ""
-                      )*/
                 }
-
 
 
             }
 
 
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            Text(
+                modifier = Modifier,
+                style = TextStyles.Card.title1,
+                text = "Torneos"
+            )
+
+            Icon(
+                modifier = Modifier.rotate(270f),
+                painter = painterResource(R.drawable.ic_detail_mini),
+                contentDescription = ""
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+        ) {
+
+            items(listTournamentsBanner) {
+                Spacer(modifier = Modifier.width(10.dp))
+                Card(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(220.dp)
+                    .shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                    .clickable { }) {
+                    val link = "https://www.apuestatotal.com${it.cms.summaryImage}"
+
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(link)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Imagen de banner",
+                        imageLoader = imageLoader,
+                        placeholder = painterResource(R.drawable.ap_logo),
+                        error = painterResource(R.drawable.master),
+                        contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+
+                }
+
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            Text(
+                modifier = Modifier,
+                style = TextStyles.Card.title1,
+                text = "Casino en vivo"
+            )
+
+            Icon(
+                modifier = Modifier.rotate(270f),
+                painter = painterResource(R.drawable.ic_detail_mini),
+                contentDescription = ""
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(170.dp)
+        ) {
+
+            items(listCasinoLiveBanner) {
+                Spacer(modifier = Modifier.width(10.dp))
+                Card(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(120.dp)
+                    .shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                    .clickable { }) {
+                    val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(link)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Imagen de banner",
+                        imageLoader = imageLoader,
+                        placeholder = painterResource(R.drawable.ap_logo),
+                        error = painterResource(R.drawable.master),
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+
+                }
+
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            Text(
+                modifier = Modifier,
+                style = TextStyles.Card.title1,
+                text = "Jackpots"
+            )
+
+            Icon(
+                modifier = Modifier.rotate(270f),
+                painter = painterResource(R.drawable.ic_detail_mini),
+                contentDescription = ""
+            )
+
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+        ) {
+
+            items(listJackpotBanner) {
+                Spacer(modifier = Modifier.width(10.dp))
+                Card(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(150.dp)
+                    .shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                    .clickable { }) {
+                    val link = "https://www.apuestatotal.com${it.logo}"
+
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(link)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Imagen de banner",
+                        imageLoader = imageLoader,
+                        placeholder = painterResource(R.drawable.ap_logo),
+                        error = painterResource(R.drawable.master),
+                        contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+
+                }
+
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            Text(
+                modifier = Modifier,
+                style = TextStyles.Card.title1,
+                text = "Misiones"
+            )
+
+            Icon(
+                modifier = Modifier.rotate(270f),
+                painter = painterResource(R.drawable.ic_detail_mini),
+                contentDescription = ""
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+        ) {
+
+            items(listCasinoBanner) {
+                Spacer(modifier = Modifier.width(10.dp))
+                Card(modifier = Modifier
+                    .fillMaxHeight()
+                    .width(150.dp)
+                    .shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                    .clickable { }) {
+                    val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(link)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Imagen de banner",
+                        imageLoader = imageLoader,
+                        placeholder = painterResource(R.drawable.ap_logo),
+                        error = painterResource(R.drawable.master),
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+
+                }
+
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+
+            Text(
+                modifier = Modifier,
+                style = TextStyles.Card.title1,
+                text = "Promociones"
+            )
+
+            Icon(
+                modifier = Modifier.rotate(270f),
+                painter = painterResource(R.drawable.ic_detail_mini),
+                contentDescription = ""
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+            //.height(140.dp)
+        ) {
+
+            items(listPromotionBanner.chunked(2)) { list ->
+
+                Spacer(modifier = Modifier.width(10.dp))
+                Column {
+                    list.forEach {
+
+                        Card(modifier = Modifier
+                            .fillMaxHeight()
+                            .width(250.dp)
+                            .height(100.dp)
+                            .shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                            .clickable { }) {
+
+
+                            val link = "https://www.apuestatotal.com${it.summaryImage}"
+                            Log.e("linkImage", link)
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(link)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Imagen de banner",
+                                imageLoader = imageLoader,
+                                placeholder = painterResource(R.drawable.ap_logo),
+                                error = painterResource(R.drawable.master),
+                                contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
+                                modifier = Modifier.fillMaxSize()
+                            )
+
+
+                        }
+                        Spacer(modifier = Modifier.height(5.dp))
+                    }
+                }
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
 
     }
 

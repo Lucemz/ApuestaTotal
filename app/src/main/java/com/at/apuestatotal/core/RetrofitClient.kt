@@ -8,10 +8,6 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL = "https://wallet.apuestatotal.com/api/"
-    //private const val BASE_URL = "http://192.168.100.6/LicenciaSFA/api/"
-    //private const val BASE_URL = "http://192.168.1.2/LicenciamientoSFANew/api/"
-
-    // http://192.168.1.230/LicenciamientoFlexMobile/ServicioLicenciamiento.svc/
 
     fun createRetrofit(interceptor: DynamicBaseUrlInterceptor): Retrofit {
         return Retrofit.Builder()

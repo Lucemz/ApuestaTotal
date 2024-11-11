@@ -14,6 +14,8 @@ class DynamicBaseUrlInterceptor() :
 
     suspend fun initialize() {
 
+
+
     }
 
     @Throws(IOException::class)

@@ -1,6 +1,5 @@
-package com.at.apuestatotal.domain.useCase.banner
+package com.at.apuestatotal.domain.useCase.bannerHome
 
-import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.repository.BannerRepository
 import javax.inject.Inject
 

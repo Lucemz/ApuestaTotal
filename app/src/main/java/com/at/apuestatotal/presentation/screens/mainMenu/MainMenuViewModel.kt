@@ -8,9 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.model.banner.Banner
-import com.at.apuestatotal.domain.useCase.banner.GetAllHomeCasinoBanner
-import com.at.apuestatotal.domain.useCase.banner.GetAllHomeCentralBanner
-import com.at.apuestatotal.domain.useCase.banner.GetAllHomeDeportivasBanner
+import com.at.apuestatotal.domain.model.casino.LobbyCasino
+import com.at.apuestatotal.domain.model.promotion.LobbyPromotion
+import com.at.apuestatotal.domain.model.tournaments.Lobby
+import com.at.apuestatotal.domain.useCase.bannerHome.BannerHomeAggregate
+import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCasinoBanner
+import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCentralBanner
+import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeDeportivasBanner
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,24 +22,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainMenuViewModel @Inject constructor(
-    private val getAllHomeDeportivasBanner: GetAllHomeDeportivasBanner,
-    private val getAllHomeCentralBanner: GetAllHomeCentralBanner,
-    private val getAllHomeCasinoBanner: GetAllHomeCasinoBanner
+    private val bannerHomeAggregate: BannerHomeAggregate
 ) :
     ViewModel() {
+    var bannerHomeCentralIndexSelected by mutableStateOf<Banner?>(null)
 
-    var banerHomeCentralIndexSelected by mutableStateOf<Banner?>(null)
-    var listaBanerHomeCentral by mutableStateOf<List<Banner>>(emptyList())
-    var listaBanerHomeDeportiva by mutableStateOf<List<Banner>>(emptyList())
-    var listaBanerHomeCasino by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomeCentral by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomeSports by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomeCasino by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomeTournament by mutableStateOf<List<Lobby>>(emptyList())
 
+    var listBannerHomeCasinoLive by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomeJackpots by mutableStateOf<List<LobbyCasino>>(emptyList())
+    var listBannerHomeMission by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerHomePromotions by mutableStateOf<List<LobbyPromotion>>(emptyList())
 
     init {
 
         getHomeDeportivasBanner()
         getHomeCentralBanner()
         getHomeCasinoBanner()
-
+        getHomeCasinoLiveBanner()
+        getHomeTournamentBanner()
+        getHomeJackpotBanner()
+        getHomePromotionBanner()
     }
 
     fun autoChangeHomeTop() {
@@ -43,12 +53,12 @@ class MainMenuViewModel @Inject constructor(
         viewModelScope.launch {
 
 
-                while (true) {
-                    counter = changeMainHomeImage(counter)
-                    counter++
-                    delay(5000)
+            while (true) {
+                counter = changeMainHomeImage(counter)
+                counter++
+                delay(5000)
 
-                }
+            }
 
         }
 
@@ -57,25 +67,26 @@ class MainMenuViewModel @Inject constructor(
     fun changeMainHomeImage(indexNew: Int): Int {
 
         val newIndex: Int? = when {
-            indexNew in 0..listaBanerHomeCentral.lastIndex -> indexNew
-            indexNew > listaBanerHomeCentral.lastIndex -> listaBanerHomeCentral.firstOrNull()
+            indexNew in 0..listBannerHomeCentral.lastIndex -> indexNew
+            indexNew > listBannerHomeCentral.lastIndex -> listBannerHomeCentral.firstOrNull()
                 ?.let { 0 }
 
-            indexNew < 0 -> listaBanerHomeCentral.lastIndex
+            indexNew < 0 -> listBannerHomeCentral.lastIndex
             else -> null
         }
-        banerHomeCentralIndexSelected = listaBanerHomeCentral.getOrNull(newIndex ?: 0)
+        bannerHomeCentralIndexSelected = listBannerHomeCentral.getOrNull(newIndex ?: 0)
         return newIndex ?: 0
 
     }
 
+
     fun getHomeDeportivasBanner() {
         viewModelScope.launch {
-            val listoncio = getAllHomeDeportivasBanner()
+            val listoncio = bannerHomeAggregate.getAllHomeDeportivasBanner()
 
             when (listoncio) {
                 is ResponseState.Success -> {
-                    listaBanerHomeDeportiva = listoncio.data
+                    listBannerHomeSports = listoncio.data
                 }
 
                 is ResponseState.Error -> {
@@ -93,11 +104,11 @@ class MainMenuViewModel @Inject constructor(
 
     fun getHomeCentralBanner() {
         viewModelScope.launch {
-            val listoncio = getAllHomeCentralBanner()
+            val listoncio = bannerHomeAggregate.getAllHomeCentralBanner()
 
             when (listoncio) {
                 is ResponseState.Success -> {
-                    listaBanerHomeCentral = listoncio.data
+                    listBannerHomeCentral = listoncio.data
                     autoChangeHomeTop()
                 }
 
@@ -116,17 +127,108 @@ class MainMenuViewModel @Inject constructor(
 
     fun getHomeCasinoBanner() {
         viewModelScope.launch {
-            val listoncio = getAllHomeCasinoBanner()
+            val listoncio = bannerHomeAggregate.getAllHomeCasinoBanner()
 
             when (listoncio) {
                 is ResponseState.Success -> {
-                    listaBanerHomeCasino = listoncio.data
-                    autoChangeHomeTop()
+                    listBannerHomeCasino = listoncio.data
+
                 }
 
                 is ResponseState.Error -> {
 
                     Log.e("error", listoncio.errorInfo.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+    }
+    fun getHomeCasinoLiveBanner() {
+        viewModelScope.launch {
+            val responseList = bannerHomeAggregate.getAllHomeCasinoLiveBanner()
+
+            when (responseList) {
+                is ResponseState.Success -> {
+                    listBannerHomeCasinoLive = responseList.data
+
+                }
+
+                is ResponseState.Error -> {
+
+                    Log.e("error", responseList.errorInfo.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+    }
+
+    fun getHomeTournamentBanner() {
+        viewModelScope.launch {
+            val responseList = bannerHomeAggregate.getAllHomeTournamentBanner()
+
+            when (responseList) {
+                is ResponseState.Success -> {
+                    listBannerHomeTournament = responseList.data
+
+                }
+
+                is ResponseState.Error -> {
+
+                    Log.e("error", responseList.errorInfo.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+    }
+
+    fun getHomeJackpotBanner() {
+        viewModelScope.launch {
+            val responseList = bannerHomeAggregate.getAllHomeJackpotBanner()
+
+            when (responseList) {
+                is ResponseState.Success -> {
+                    listBannerHomeJackpots = responseList.data
+
+                }
+
+                is ResponseState.Error -> {
+
+                    Log.e("error", responseList.errorInfo.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+    }
+
+    fun getHomePromotionBanner() {
+        viewModelScope.launch {
+            val responseList = bannerHomeAggregate.getAllHomePromotionBanner()
+
+            when (responseList) {
+                is ResponseState.Success -> {
+                    listBannerHomePromotions = responseList.data
+
+                }
+
+                is ResponseState.Error -> {
+
+                    Log.e("error", responseList.errorInfo.toString())
                 }
 
                 else -> {

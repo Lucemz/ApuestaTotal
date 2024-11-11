@@ -1,10 +1,12 @@
 package com.at.apuestatotal.data.repository
 
-import android.net.Uri
 import com.at.apuestatotal.data.remote.ATService
 import com.at.apuestatotal.domain.model.ErrorInfo
 import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.model.banner.Banner
+import com.at.apuestatotal.domain.model.casino.LobbyCasino
+import com.at.apuestatotal.domain.model.promotion.LobbyPromotion
+import com.at.apuestatotal.domain.model.tournaments.Lobby
 import com.at.apuestatotal.domain.repository.BannerRepository
 import com.at.apuestatotal.presentation.utils.FunctionApi
 import javax.inject.Inject
@@ -16,12 +18,15 @@ class BannerRepositoryImpl @Inject constructor(
     BannerRepository {
     override suspend fun getAllHomeCentralBanner(): ResponseState<List<Banner>> {
         return try {
-            val respuesta = atService.post(
+            val response = atService.post(
                 endpoint = "/api/contents/getBanners?company=ATP&container=HOME_CENTRAL",
                 objeto = Any()
             )
 
-            val list: List<Banner> = functionApi.deserialize(respuesta, "banners")
+            val list: List<Banner> = functionApi.deserialize(response, "banners")
+            list.forEach {
+                getImageBanner(banner = it)
+            }
             ResponseState.Success(list)
         } catch (e: Exception) {
             return ResponseState.Error(ErrorInfo(descripcion = e.message))
@@ -32,11 +37,11 @@ class BannerRepositoryImpl @Inject constructor(
 
     override suspend fun getAllHomeDeporitvasBanner(): ResponseState<List<Banner>> {
         return try {
-            val respuesta = atService.post(
+            val response = atService.post(
                 endpoint = "contents/getBanners?company=ATP&container=HOME_DEPORTIVAS",
                 objeto = Any()
             )
-            val list: List<Banner> = functionApi.deserialize(respuesta, "banners")
+            val list: List<Banner> = functionApi.deserialize(response, "banners")
 
 
             ResponseState.Success(list)
@@ -59,30 +64,80 @@ class BannerRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllHomeCasinoLiveBanner(): ResponseState<List<Banner>> {
+        return try {
+            val respuesta = atService.post(
+                endpoint = "contents/getBanners?company=ATP&container=HOME_CASINOVIVO",
+                objeto = Any()
+            )
+            val list: List<Banner> = functionApi.deserialize(respuesta, "banners")
 
-    override suspend fun getImageBanner(imgUrl: String): Uri? {
-        /*     return try {
-                 // Descargar la imagen con Retrofit
-                 val responseBody: ResponseBody = api.downloadImage(imgUrl)
+            ResponseState.Success(list)
+        } catch (e: Exception) {
+            ResponseState.Error(ErrorInfo(descripcion = e.message))
+        }
+    }
 
-                 // Guardar la imagen en caché
-                 val inputStream: InputStream = responseBody.byteStream()
-                 val file = File(context.cacheDir, "banner_${System.currentTimeMillis()}.jpg")
-                 val outputStream = FileOutputStream(file)
+    override suspend fun getAllHomeTournamentBanner(): ResponseState<List<Lobby>> {
+        return try {
+            val respuestaMain = atService.post(
+                endpoint = "https://wallet.apuestatotal.com/api/contents/getTournamentsLobby?company=ATP&lobby=MAIN",
+                objeto = Any()
+            )
+            val respuestaCarreras = atService.post(
+                endpoint = "https://wallet.apuestatotal.com/api/contents/getTournamentsLobby?company=ATP&lobby=CARRERAS",
+                objeto = Any()
+            )
+            val listMain: List<Lobby> = functionApi.deserialize(respuestaMain, "lobby")
+            val listCarrera: List<Lobby> = functionApi.deserialize(respuestaMain, "lobby")
 
-                 inputStream.use { input ->
-                     outputStream.use { output ->
-                         input.copyTo(output)
-                     }
-                 }
+            ResponseState.Success(listMain + listCarrera)
+        } catch (e: Exception) {
+            ResponseState.Error(ErrorInfo(descripcion = e.message))
+        }
+    }
 
-                 // Devolver la URI del archivo de imagen guardado
-                 Uri.fromFile(file)
-             } catch (e: Exception) {
-                 e.printStackTrace()
-                 null
-             }*/
-        TODO()
+    override suspend fun getAllHomeJackpotBanner(): ResponseState<List<LobbyCasino>> {
+        return try {
+            val response = atService.post(
+                endpoint = "https://wallet.apuestatotal.com/api/contents/getLobby?company=ATP&lobby=CASINO_TODOS&filter={\"name\":\"\",\"providers\":\"\",\"tags\":\"JACKPOT\",\"favourites\":false}&limits={\"init\":0,\"end\":15}",
+                objeto = Any()
+            )
+            val listResponse: List<LobbyCasino> = functionApi.deserialize(response, "lobby")
+
+            ResponseState.Success(listResponse)
+        } catch (e: Exception) {
+            ResponseState.Error(ErrorInfo(descripcion = e.message))
+        }
+    }
+
+    override suspend fun getAllHomePromotionsBanner(): ResponseState<List<LobbyPromotion>> {
+        return try {
+            val response = atService.post(
+                endpoint = "https://wallet.apuestatotal.com/api/contents/getPromotionsLobby?company=ATP&lobby=MAIN",
+                objeto = Any()
+            )
+            val listResponse: List<LobbyPromotion> = functionApi.deserialize(response, "lobby")
+
+            ResponseState.Success(listResponse)
+        } catch (e: Exception) {
+            ResponseState.Error(ErrorInfo(descripcion = e.message))
+        }
+    }
+
+
+
+    override suspend fun getImageBanner(banner: Banner) {
+
+     /*   try {
+           // atService.downloadImage()
+            val imagen = atService.downloadImage(banner.bannerConfig.image)
+            val anibal = imagen
+
+        }catch (e: Exception){
+            Log.e("getImage", e.message.toString())
+        }*/
+
     }
 
 }
