@@ -32,7 +32,6 @@ import com.at.apuestatotal.presentation.ui.theme.TextStyles
 @Composable
 fun LoadingScreen(
     navHostController: NavHostController,
-    paddingValues: PaddingValues
 ) {
 
     LaunchedEffect(Unit) {
@@ -44,7 +43,6 @@ fun LoadingScreen(
     }
 
     Scaffold(
-        modifier = Modifier.padding(paddingValues),
         topBar = {},
         content = {
 
@@ -103,7 +101,7 @@ fun LoadingScreen(
 @Composable
 private fun Preview() {
     ApuestaTotalTheme {
-        LoadingScreen(rememberNavController(), PaddingValues())
+        LoadingScreen(rememberNavController())
 
     }
 

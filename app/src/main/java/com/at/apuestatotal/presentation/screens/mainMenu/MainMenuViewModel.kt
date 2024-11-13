@@ -12,33 +12,47 @@ import com.at.apuestatotal.domain.model.casino.LobbyCasino
 import com.at.apuestatotal.domain.model.promotion.LobbyPromotion
 import com.at.apuestatotal.domain.model.tournaments.Lobby
 import com.at.apuestatotal.domain.useCase.bannerHome.BannerHomeAggregate
-import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCasinoBanner
-import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCentralBanner
-import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeDeportivasBanner
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainMenuViewModel @Inject constructor(
     private val bannerHomeAggregate: BannerHomeAggregate
-) :
-    ViewModel() {
+) : ViewModel() {
+
     var bannerHomeCentralIndexSelected by mutableStateOf<Banner?>(null)
 
     var listBannerHomeCentral by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomeSports by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomeCasino by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomeTournament by mutableStateOf<List<Lobby>>(emptyList())
-
     var listBannerHomeCasinoLive by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomeJackpots by mutableStateOf<List<LobbyCasino>>(emptyList())
     var listBannerHomeMission by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomePromotions by mutableStateOf<List<LobbyPromotion>>(emptyList())
 
-    init {
+    private val listWordAt: List<String> = listOf(
+        "Es juegos virtuales",
+        "Es diversion",
+        "Es casino en vivo",
+        "Es pagos rapidos",
+        "Es los reyes del ajuste",
+        "Es entretenimiento",
+        "Es deportes",
+        "Es casino"
+    )
 
+    private val alfabeto = listOf(' ') + ('a'..'z') + ('A'..'Z') + listOf('á', 'é', 'í', 'ó', 'ú')
+
+    private val _textoMostradoFlow = MutableStateFlow("")
+    val textoMostrado: StateFlow<String> = _textoMostradoFlow.asStateFlow()
+
+    init {
         getHomeDeportivasBanner()
         getHomeCentralBanner()
         getHomeCasinoBanner()
@@ -46,197 +60,154 @@ class MainMenuViewModel @Inject constructor(
         getHomeTournamentBanner()
         getHomeJackpotBanner()
         getHomePromotionBanner()
+        mostrarFrasesAnimadas()
     }
 
     fun autoChangeHomeTop() {
         var counter = 0
         viewModelScope.launch {
-
-
             while (true) {
                 counter = changeMainHomeImage(counter)
                 counter++
                 delay(5000)
-
             }
-
         }
-
     }
 
-    fun changeMainHomeImage(indexNew: Int): Int {
+    private fun mostrarFrasesAnimadas() {
+        viewModelScope.launch {
+            val delayEscritura = 3L
+            val delayBorrado = 1L
+            val delayPausa = 1500L
 
+            while (true) {
+                for (palabra in listWordAt) {
+                    _textoMostradoFlow.value = ""
+
+                    // Escribir cada letra de la palabra
+                    for (letra in palabra) {
+                        var progresoParcial = _textoMostradoFlow.value
+
+                        for (letraAlfabeto in alfabeto) {
+                            _textoMostradoFlow.value = progresoParcial + letraAlfabeto
+                            delay(delayEscritura)
+
+                            if (letraAlfabeto == letra) {
+                                _textoMostradoFlow.value = progresoParcial + letra
+                                break
+                            }
+                        }
+                    }
+
+                    delay(delayPausa)
+
+                    // Borrar cada letra en orden inverso desde el índice actual en el alfabeto
+                    for (letra in palabra.reversed()) {
+                        var progresoParcial = _textoMostradoFlow.value.dropLast(1)
+                        val index = alfabeto.indexOf(letra)
+
+                        for (i in index downTo 0) {
+                            _textoMostradoFlow.value = progresoParcial + alfabeto[i]
+                            delay(delayEscritura)
+
+                            if (i == 0) {
+                                _textoMostradoFlow.value = progresoParcial
+                                break
+                            }
+                        }
+                    }
+
+                    delay(500)
+                }
+            }
+        }
+    }
+    fun changeMainHomeImage(indexNew: Int): Int {
         val newIndex: Int? = when {
             indexNew in 0..listBannerHomeCentral.lastIndex -> indexNew
-            indexNew > listBannerHomeCentral.lastIndex -> listBannerHomeCentral.firstOrNull()
-                ?.let { 0 }
-
+            indexNew > listBannerHomeCentral.lastIndex -> 0
             indexNew < 0 -> listBannerHomeCentral.lastIndex
             else -> null
         }
         bannerHomeCentralIndexSelected = listBannerHomeCentral.getOrNull(newIndex ?: 0)
         return newIndex ?: 0
-
     }
 
-
-    fun getHomeDeportivasBanner() {
+    private fun getHomeDeportivasBanner() {
         viewModelScope.launch {
-            val listoncio = bannerHomeAggregate.getAllHomeDeportivasBanner()
-
-            when (listoncio) {
-                is ResponseState.Success -> {
-                    listBannerHomeSports = listoncio.data
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", listoncio.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeDeportivasBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeSports = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
 
-    fun getHomeCentralBanner() {
+    private fun getHomeCentralBanner() {
         viewModelScope.launch {
-            val listoncio = bannerHomeAggregate.getAllHomeCentralBanner()
-
-            when (listoncio) {
-                is ResponseState.Success -> {
-                    listBannerHomeCentral = listoncio.data
-                    autoChangeHomeTop()
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", listoncio.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeCentralBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeCentral = response.data
+                autoChangeHomeTop()
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
 
-    fun getHomeCasinoBanner() {
+    private fun getHomeCasinoBanner() {
         viewModelScope.launch {
-            val listoncio = bannerHomeAggregate.getAllHomeCasinoBanner()
-
-            when (listoncio) {
-                is ResponseState.Success -> {
-                    listBannerHomeCasino = listoncio.data
-
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", listoncio.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeCasinoBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeCasino = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
-    fun getHomeCasinoLiveBanner() {
+
+    private fun getHomeCasinoLiveBanner() {
         viewModelScope.launch {
-            val responseList = bannerHomeAggregate.getAllHomeCasinoLiveBanner()
-
-            when (responseList) {
-                is ResponseState.Success -> {
-                    listBannerHomeCasinoLive = responseList.data
-
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", responseList.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeCasinoLiveBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeCasinoLive = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
 
-    fun getHomeTournamentBanner() {
+    private fun getHomeTournamentBanner() {
         viewModelScope.launch {
-            val responseList = bannerHomeAggregate.getAllHomeTournamentBanner()
-
-            when (responseList) {
-                is ResponseState.Success -> {
-                    listBannerHomeTournament = responseList.data
-
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", responseList.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeTournamentBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeTournament = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
 
-    fun getHomeJackpotBanner() {
+    private fun getHomeJackpotBanner() {
         viewModelScope.launch {
-            val responseList = bannerHomeAggregate.getAllHomeJackpotBanner()
-
-            when (responseList) {
-                is ResponseState.Success -> {
-                    listBannerHomeJackpots = responseList.data
-
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", responseList.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomeJackpotBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomeJackpots = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
 
-    fun getHomePromotionBanner() {
+    private fun getHomePromotionBanner() {
         viewModelScope.launch {
-            val responseList = bannerHomeAggregate.getAllHomePromotionBanner()
-
-            when (responseList) {
-                is ResponseState.Success -> {
-                    listBannerHomePromotions = responseList.data
-
-                }
-
-                is ResponseState.Error -> {
-
-                    Log.e("error", responseList.errorInfo.toString())
-                }
-
-                else -> {
-
-                }
+            val response = bannerHomeAggregate.getAllHomePromotionBanner()
+            if (response is ResponseState.Success) {
+                listBannerHomePromotions = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
-
     }
-
 }

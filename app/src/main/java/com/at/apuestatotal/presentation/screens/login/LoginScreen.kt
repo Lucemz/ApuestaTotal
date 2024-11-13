@@ -14,12 +14,10 @@ import com.at.apuestatotal.presentation.screens.login.components.LoginViewModel
 @Composable
 fun LoginScreen(
     navHostController: NavHostController,
-    paddingValues: PaddingValues,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     Scaffold(
-        modifier = Modifier.padding(paddingValues),
         topBar = {},
         content = {
             LoginContent(navHostController, it, loginViewModel)

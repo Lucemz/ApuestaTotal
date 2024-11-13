@@ -222,7 +222,7 @@ fun LoginContent(navHostController: NavHostController, paddingValues: PaddingVal
 @Composable
 private fun Preview() {
     ApuestaTotalTheme {
-        LoginScreen(rememberNavController(), PaddingValues())
+        LoginScreen(rememberNavController())
 
     }
 

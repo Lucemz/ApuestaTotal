@@ -2,9 +2,11 @@ package com.at.apuestatotal.presentation.screens.mainMenu.components
 
 import android.os.Build
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -32,6 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,6 +53,9 @@ import com.at.apuestatotal.presentation.screens.mainMenu.MainMenuScreen
 import com.at.apuestatotal.presentation.screens.mainMenu.MainMenuViewModel
 import com.at.apuestatotal.presentation.ui.theme.ApuestaTotalTheme
 import com.at.apuestatotal.presentation.ui.theme.TextStyles
+import com.example.ui.theme.Primary
+import com.example.ui.theme.Secondary
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun MainMenuContent(
@@ -58,8 +69,6 @@ fun MainMenuContent(
     val listCasinoLiveBanner = mainMenuViewModel.listBannerHomeCasinoLive
     val listJackpotBanner = mainMenuViewModel.listBannerHomeJackpots
     val listPromotionBanner = mainMenuViewModel.listBannerHomePromotions
-
-
 
 
     val context = LocalContext.current
@@ -79,17 +88,17 @@ fun MainMenuContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        val link =
+        val linkPrincipal =
             "https://www.apuestatotal.com${mainMenuViewModel.bannerHomeCentralIndexSelected?.bannerConfig?.image}"
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(130.dp)
                 .clickable {
-                    mainMenuViewModel.getHomeCentralBanner()
+                 //   mainMenuViewModel.getHomeCentralBanner()
                 },
             model = ImageRequest.Builder(context)
-                .data(link)
+                .data(linkPrincipal)
                 .crossfade(true)
                 .build(),
             contentDescription = "Imagen de banner",
@@ -514,7 +523,7 @@ fun MainMenuContent(
 
 
                             val link = "https://www.apuestatotal.com${it.summaryImage}"
-                            Log.e("linkImage", link)
+                            // Log.e("linkImage", link)
                             AsyncImage(
                                 model = ImageRequest.Builder(context)
                                     .data(link)
@@ -539,10 +548,49 @@ fun MainMenuContent(
 
         }
 
+        Spacer(modifier = Modifier.height(30.dp))
+
+         TextoAnimado(mainMenuViewModel.textoMostrado)
+
         Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Secondary.RedSecondary, fontWeight = FontWeight.SemiBold)) {
+                    append("Apuesta Total ¡Para ganar, hay que creer! ")
+                }
+                withStyle(style = SpanStyle(color = Primary.Black)) {
+                    append("Juega y gana mientras disfrutas de tus deportes favoritos. Todas las ligas y eventos deportivos más importantes del mundo, los mejores mercados de apuestas y ofertas de cuotas, apuestas prematch y en vivo, juegos virtuales, casino online y en vivo, y mucho más.")
+                }
+            },
+            textAlign = TextAlign.Center,
+            style = TextStyles.Body.textCard2
+        )
+
 
     }
 
+}
+
+@Composable
+fun TextoAnimado(textoMostrado: StateFlow<String>) {
+    val texto = textoMostrado.collectAsState().value
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .width(300.dp),
+            painter = painterResource(R.drawable.ap_logo),
+            contentDescription = "AT Logo"
+        )
+
+        Text(text = texto, style = TextStyles.Heading.h1)
+    }
 }
 
 @Preview

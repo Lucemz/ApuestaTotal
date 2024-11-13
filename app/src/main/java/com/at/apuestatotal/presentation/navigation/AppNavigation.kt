@@ -17,7 +17,6 @@ const val MAIN_ROUTE = "mainRoute"
 @Composable
 fun AppNavigation(
     navHostController: NavHostController,
-    innerPadding: PaddingValues,
     startDestination: String
 ) {
 
@@ -39,10 +38,10 @@ fun AppNavigation(
     ) {
 
         composable(route = AppNavRoute.LoginNR.route) {
-            LoginScreen(navHostController, paddingValues = innerPadding)
+            LoginScreen(navHostController)
         }
         composable(route = AppNavRoute.LoadingNR.route) {
-            LoadingScreen(navHostController, paddingValues = innerPadding)
+            LoadingScreen(navHostController)
         }
         composable(route = AppNavRoute.BetHistoryNR.route) {
             BetHistoryScreen(navHostController)
