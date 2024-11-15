@@ -18,4 +18,5 @@ interface BannerRepository {
     suspend fun getAllHomeTournamentBanner(): ResponseState<List<Lobby>>
     suspend fun getAllHomeJackpotBanner(): ResponseState<List<LobbyCasino>>
     suspend fun getAllHomePromotionsBanner(): ResponseState<List<LobbyPromotion>>
+    suspend fun getAllHomePaymentMethods(): ResponseState<List<Banner>>
 }

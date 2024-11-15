@@ -15,8 +15,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.compose.AsyncImage
@@ -69,6 +73,7 @@ fun MainMenuContent(
     val listCasinoLiveBanner = mainMenuViewModel.listBannerHomeCasinoLive
     val listJackpotBanner = mainMenuViewModel.listBannerHomeJackpots
     val listPromotionBanner = mainMenuViewModel.listBannerHomePromotions
+    val listPaymentMethodsBanner = mainMenuViewModel.listBannerHomePaymentMethods
 
 
     val context = LocalContext.current
@@ -552,7 +557,47 @@ fun MainMenuContent(
 
          TextoAnimado(mainMenuViewModel.textoMostrado)
 
+
         Spacer(modifier = Modifier.height(10.dp))
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+           //     .height(140.dp),
+
+        ) {
+
+            items(listPaymentMethodsBanner) {
+                Spacer(modifier = Modifier.width(10.dp))
+
+                    val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+
+                    AsyncImage(
+                        modifier = Modifier.widthIn(max= 200.dp).heightIn(max = 150.dp).clickable {  },
+                        model = ImageRequest.Builder(context)
+                            .data(link)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Imagen de banner",
+                        imageLoader = imageLoader,
+                        placeholder = painterResource(R.drawable.ap_logo),
+                        error = painterResource(R.drawable.master),
+                        contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
+                      //  modifier = Modifier.fillMaxSize()
+                    )
+
+
+
+
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+       /* Spacer(modifier = Modifier.height(10.dp))
         Text(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
             text = buildAnnotatedString {
@@ -565,7 +610,7 @@ fun MainMenuContent(
             },
             textAlign = TextAlign.Center,
             style = TextStyles.Body.textCard2
-        )
+        )*/
 
 
     }

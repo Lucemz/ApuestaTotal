@@ -101,7 +101,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("io.coil-kt:coil:2.2.2")
     implementation("io.coil-kt:coil-gif:2.2.2")
-
+ //
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
 
 
 

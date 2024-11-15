@@ -35,6 +35,7 @@ class MainMenuViewModel @Inject constructor(
     var listBannerHomeJackpots by mutableStateOf<List<LobbyCasino>>(emptyList())
     var listBannerHomeMission by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomePromotions by mutableStateOf<List<LobbyPromotion>>(emptyList())
+    var listBannerHomePaymentMethods by mutableStateOf<List<Banner>>(emptyList())
 
     private val listWordAt: List<String> = listOf(
         "Es juegos virtuales",
@@ -60,6 +61,7 @@ class MainMenuViewModel @Inject constructor(
         getHomeTournamentBanner()
         getHomeJackpotBanner()
         getHomePromotionBanner()
+        getHomePaymentMethodsBanner()
         mostrarFrasesAnimadas()
     }
 
@@ -77,14 +79,13 @@ class MainMenuViewModel @Inject constructor(
     private fun mostrarFrasesAnimadas() {
         viewModelScope.launch {
             val delayEscritura = 3L
-            val delayBorrado = 1L
+            val delayBorrado = 2L
             val delayPausa = 1500L
 
             while (true) {
                 for (palabra in listWordAt) {
                     _textoMostradoFlow.value = ""
 
-                    // Escribir cada letra de la palabra
                     for (letra in palabra) {
                         var progresoParcial = _textoMostradoFlow.value
 
@@ -101,14 +102,13 @@ class MainMenuViewModel @Inject constructor(
 
                     delay(delayPausa)
 
-                    // Borrar cada letra en orden inverso desde el índice actual en el alfabeto
                     for (letra in palabra.reversed()) {
                         var progresoParcial = _textoMostradoFlow.value.dropLast(1)
                         val index = alfabeto.indexOf(letra)
 
                         for (i in index downTo 0) {
                             _textoMostradoFlow.value = progresoParcial + alfabeto[i]
-                            delay(delayEscritura)
+                            delay(delayBorrado)
 
                             if (i == 0) {
                                 _textoMostradoFlow.value = progresoParcial
@@ -122,6 +122,7 @@ class MainMenuViewModel @Inject constructor(
             }
         }
     }
+
     fun changeMainHomeImage(indexNew: Int): Int {
         val newIndex: Int? = when {
             indexNew in 0..listBannerHomeCentral.lastIndex -> indexNew
@@ -205,6 +206,17 @@ class MainMenuViewModel @Inject constructor(
             val response = bannerHomeAggregate.getAllHomePromotionBanner()
             if (response is ResponseState.Success) {
                 listBannerHomePromotions = response.data
+            } else {
+                Log.e("error", (response as ResponseState.Error).errorInfo.toString())
+            }
+        }
+    }
+
+    private fun getHomePaymentMethodsBanner() {
+        viewModelScope.launch {
+            val response = bannerHomeAggregate.getAllHomePaymentMethods()
+            if (response is ResponseState.Success) {
+                listBannerHomePaymentMethods = response.data
             } else {
                 Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }

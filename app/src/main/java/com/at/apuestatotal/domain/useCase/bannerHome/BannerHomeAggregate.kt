@@ -9,6 +9,7 @@ data class BannerHomeAggregate(
     val getAllHomeCasinoLiveBanner: GetAllHomeCasinoLiveBanner,
     val getAllHomeTournamentBanner: GetAllHomeTournamentBanner,
     val getAllHomeJackpotBanner: GetAllHomeJackpotBanner,
-    val getAllHomePromotionBanner: GetAllHomePromotionBanner
+    val getAllHomePromotionBanner: GetAllHomePromotionBanner,
+    val getAllHomePaymentMethods: GetAllHomePaymentMethods
 
 )

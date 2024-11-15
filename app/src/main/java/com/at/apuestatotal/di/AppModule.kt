@@ -14,6 +14,7 @@ import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCasinoLiveBanner
 import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeCentralBanner
 import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeDeportivasBanner
 import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeJackpotBanner
+import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomePaymentMethods
 import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomePromotionBanner
 import com.at.apuestatotal.domain.useCase.bannerHome.GetAllHomeTournamentBanner
 import dagger.Module
@@ -47,7 +48,8 @@ object AppModule {
         getAllHomeCasinoLiveBanner: GetAllHomeCasinoLiveBanner,
         getAllHomeTournamentBanner: GetAllHomeTournamentBanner,
         getAllHomeJackpotBanner: GetAllHomeJackpotBanner,
-        getAllHomePromotionBanner: GetAllHomePromotionBanner
+        getAllHomePromotionBanner: GetAllHomePromotionBanner,
+        getAllHomePaymentMethods: GetAllHomePaymentMethods
     ) = BannerHomeAggregate(
         getAllHomeCentralBanner,
         getAllHomeDeportivasBanner,
@@ -55,7 +57,8 @@ object AppModule {
         getAllHomeCasinoLiveBanner,
         getAllHomeTournamentBanner,
         getAllHomeJackpotBanner,
-        getAllHomePromotionBanner
+        getAllHomePromotionBanner,
+        getAllHomePaymentMethods
     )
 
 }

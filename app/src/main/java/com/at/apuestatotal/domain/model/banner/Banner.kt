@@ -15,6 +15,5 @@ data class BannerConfig(
     @SerializedName("title") val title: String,
     @SerializedName("body") val body: String,
     @SerializedName("image") val image: String,
-    @SerializedName("button_text") val buttonText: String? = null,
-    @SerializedName("imageUri") var imageUri: Uri? = null
+    @SerializedName("button_text") val buttonText: String? = null
 )

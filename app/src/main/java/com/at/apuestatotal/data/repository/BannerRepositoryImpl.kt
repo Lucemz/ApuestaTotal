@@ -125,6 +125,20 @@ class BannerRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllHomePaymentMethods(): ResponseState<List<Banner>> {
+        return try {
+            val response = atService.post(
+                endpoint = "https://wallet.apuestatotal.com/api/contents/getBanners?company=ATP&container=METODOSDEPAGO",
+                objeto = Any()
+            )
+            val listResponse: List<Banner> = functionApi.deserialize(response, "banners")
+
+            ResponseState.Success(listResponse)
+        } catch (e: Exception) {
+            ResponseState.Error(ErrorInfo(descripcion = e.message))
+        }
+    }
+
 
 
     override suspend fun getImageBanner(banner: Banner) {

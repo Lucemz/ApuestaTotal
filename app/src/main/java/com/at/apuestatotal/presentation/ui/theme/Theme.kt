@@ -8,16 +8,16 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.ui.theme.Grays
 import com.example.ui.theme.Primary
 import com.example.ui.theme.Secondary
 
 private val DarkColorScheme = darkColorScheme(
-  //  primary = Purple80,
-  //  secondary = PurpleGrey80,
-  //  tertiary = Pink80
-)
+    primary = Color.Red,
+    secondary = Color.White,
+    tertiary = Color.Gray)
 
 private val LightColorScheme = lightColorScheme(
   //  primary = Purple40,
@@ -80,7 +80,7 @@ fun ApuestaTotalTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> ApuestaTotalScheme
+        darkTheme -> DarkColorScheme
         else -> ApuestaTotalScheme
     }
 
