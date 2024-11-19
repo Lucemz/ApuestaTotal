@@ -16,36 +16,43 @@ val Poppins = FontFamily(
     Font(R.font.poppins_bold, FontWeight.Bold)
 )
 
+val Roboto = FontFamily(
+    Font(R.font.roboto, FontWeight.Normal),
+    Font(R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto_bold, FontWeight.SemiBold),
+    Font(R.font.roboto_black, FontWeight.Bold)
+)
+
 object TextStyles {
 
     // Categoría Heading
     object Heading {
         val h1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             lineHeight = 1.3.em  // 130% de 20sp
         )
         val h2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.SemiBold,
             fontSize = 18.sp,
             lineHeight = 1.3.em  // 130% de 18sp
         )
         val h3 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
             lineHeight = 1.3.em  // 130% de 16sp
         )
         val subtitle1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 1.3.em  // 130% de 14sp
         )
         val subtitle2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             lineHeight = 1.3.em  // 130% de 12sp
@@ -55,25 +62,25 @@ object TextStyles {
     // Categoría Card
     object Card {
         val title1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
             lineHeight = 1.3.em  // 130% de 16sp
         )
         val title2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
             lineHeight = 1.3.em  // 130% de 14sp
         )
         val subtitle1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             lineHeight = 1.3.em  // 130% de 12sp
         )
         val subtitle2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 10.sp,
             lineHeight = 1.3.em  // 130% de 10sp
@@ -83,19 +90,19 @@ object TextStyles {
     // Categoría Button
     object Button {
         val text1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
             lineHeight = 1.3.em  // 130% de 16sp
         )
         val text2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 1.3.em  // 130% de 14sp
         )
         val text3 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             lineHeight = 1.3.em  // 130% de 12sp
@@ -105,31 +112,31 @@ object TextStyles {
     // Categoría Body
     object Body {
         val paragraph1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             lineHeight = 1.3.em  // 130% de 16sp
         )
         val paragraph2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             lineHeight = 1.3.em  // 130% de 14sp
         )
         val subtitleCard1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Medium,
             fontSize = 10.sp,
             lineHeight = 1.3.em  // 130% de 10sp
         )
         val textCard1 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             lineHeight = 1.3.em  // 130% de 12sp
         )
         val textCard2 = TextStyle(
-            fontFamily = Poppins,
+            fontFamily = Roboto,
             fontWeight = FontWeight.Normal,
             fontSize = 10.sp,
             lineHeight = 1.3.em  // 130% de 10sp

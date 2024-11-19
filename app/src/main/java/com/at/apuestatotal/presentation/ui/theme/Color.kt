@@ -29,4 +29,7 @@ object Grays {
     val Gray7 = Color(0xFFECECEC)
     val Gray8 = Color(0xFFF3F3F3)
     val Gray9 = Color(0xFF818181)
+
+    val GrayBorder = Color(0xFF333333)
+    val blackBackGround = Color(0xFF111111)
 }

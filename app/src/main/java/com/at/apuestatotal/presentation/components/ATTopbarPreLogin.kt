@@ -59,13 +59,13 @@ fun ATTopbarPreLogin(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-              .background(Primary.Black)
+            .background(Grays.blackBackGround)
               .padding(WindowInsets.statusBars.asPaddingValues())
             .height(48.dp)
     ) {
         Row(
             modifier = Modifier
-                .background(Color.Black)
+
                 .fillMaxSize()
                 .padding(horizontal = 10.dp), // Margen horizontal
             verticalAlignment = Alignment.CenterVertically,
@@ -133,8 +133,8 @@ fun ATTopbarPreLogin(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .height(1.dp)
-                .background(Secondary.RedSecondary)
+                .height(2.dp)
+                .background(Grays.GrayBorder.copy(alpha = 0.25f))
         )
     }
 

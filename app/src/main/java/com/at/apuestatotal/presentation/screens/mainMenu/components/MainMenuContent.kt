@@ -98,7 +98,7 @@ fun MainMenuContent(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(130.dp)
+                .height(200.dp)
                 .clickable {
                  //   mainMenuViewModel.getHomeCentralBanner()
                 },

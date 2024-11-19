@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.model.banner.Banner
 import com.at.apuestatotal.domain.model.casino.LobbyCasino
+import com.at.apuestatotal.domain.model.optionNavigationDrawer.ItemOptionDrawer
+import com.at.apuestatotal.domain.model.optionNavigationDrawer.OptionDrawer
 import com.at.apuestatotal.domain.model.promotion.LobbyPromotion
 import com.at.apuestatotal.domain.model.tournaments.Lobby
 import com.at.apuestatotal.domain.useCase.bannerHome.BannerHomeAggregate
@@ -36,6 +38,7 @@ class MainMenuViewModel @Inject constructor(
     var listBannerHomeMission by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomePromotions by mutableStateOf<List<LobbyPromotion>>(emptyList())
     var listBannerHomePaymentMethods by mutableStateOf<List<Banner>>(emptyList())
+    var listOptionsNavigationDrawer by mutableStateOf<List<OptionDrawer>>(emptyList())
 
     private val listWordAt: List<String> = listOf(
         "Es juegos virtuales",
@@ -47,6 +50,7 @@ class MainMenuViewModel @Inject constructor(
         "Es deportes",
         "Es casino"
     )
+
 
     private val alfabeto = listOf(' ') + ('a'..'z') + ('A'..'Z') + listOf('á', 'é', 'í', 'ó', 'ú')
 
@@ -222,4 +226,60 @@ class MainMenuViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getOptionsNavigationDrawer() {
+        val listOptionsNavigationDrawer = listOf(
+            OptionDrawer(
+                "APUESTA TOTAL",
+                listOf(
+                    ItemOptionDrawer("Acerca de Apuesta Total"),
+                    ItemOptionDrawer("Juego responsable"),
+                    ItemOptionDrawer("Políticas de privacidad"),
+                    ItemOptionDrawer("Políticas de cookies"),
+                    ItemOptionDrawer("¿Quieres ser un agente AT?"),
+                    ItemOptionDrawer("Trabaja con nosotros")
+                )
+            ),
+            OptionDrawer(
+                "PRODUCTOS",
+                listOf(
+                    ItemOptionDrawer("Apuestas en vivo"),
+                    ItemOptionDrawer("Apuestas deportivas"),
+                    ItemOptionDrawer("Casino"),
+                    ItemOptionDrawer("Casino en vivo"),
+                    ItemOptionDrawer("Juegos virtuales"),
+                    ItemOptionDrawer("Football Studio")
+                )
+            ),
+            OptionDrawer(
+                "EVENTOS Y PROMOCIONES",
+                listOf(
+                    ItemOptionDrawer("Torneos y Carreras"),
+                    ItemOptionDrawer("Sorteos"),
+                    ItemOptionDrawer("Resultados"),
+                    ItemOptionDrawer("Promociones")
+                )
+            ),
+            OptionDrawer(
+                "ASISTENCIA Y SERVICIO AL CLIENTE",
+                listOf(
+                    ItemOptionDrawer("Nuestras tiendas"),
+                    ItemOptionDrawer("Servicio al cliente"),
+                    ItemOptionDrawer("Acerca de Teleservicios"),
+                    ItemOptionDrawer("Territorios restringidos"),
+                    ItemOptionDrawer("Reglamento de juego")
+                )
+            ),
+            OptionDrawer(
+                "RECURSOS Y CONTENIDO",
+                listOf(
+                    ItemOptionDrawer("Podcast"),
+                    ItemOptionDrawer("Preguntas frecuentes"),
+                    ItemOptionDrawer("Tutoriales"),
+                    ItemOptionDrawer("Calendario de fútbol")
+                )
+            )
+        )
+    }
+
 }
