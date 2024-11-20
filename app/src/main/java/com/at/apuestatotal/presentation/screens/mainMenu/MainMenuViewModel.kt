@@ -230,6 +230,11 @@ class MainMenuViewModel @Inject constructor(
     private fun getOptionsNavigationDrawer() {
         val listOptionsNavigationDrawer = listOf(
             OptionDrawer(
+                "EL TIO TE TRAE",
+                listOf(ItemOptionDrawer("Football Studio"), ItemOptionDrawer("Poker"))
+            ),
+
+            OptionDrawer(
                 "APUESTA TOTAL",
                 listOf(
                     ItemOptionDrawer("Acerca de Apuesta Total"),

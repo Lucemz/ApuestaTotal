@@ -1,55 +1,42 @@
 package com.at.apuestatotal.presentation.screens.mainMenu
 
-import SetStatusBarIconsColor
-import ToggleStatusBar
 import android.util.Log
 import android.view.animation.OvershootInterpolator
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,36 +44,33 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.at.apuestatotal.R
 import com.at.apuestatotal.domain.model.optionNavigationDrawer.ItemOptionDrawer
+import com.at.apuestatotal.domain.model.optionNavigationDrawer.NUEVO
 import com.at.apuestatotal.domain.model.optionNavigationDrawer.OptionDrawer
+import com.at.apuestatotal.domain.model.optionNavigationDrawer.TOP_1
 import com.at.apuestatotal.presentation.components.ATTopbarPreLogin
 import com.at.apuestatotal.presentation.screens.mainMenu.components.MainMenuContent
 import com.at.apuestatotal.presentation.ui.theme.ApuestaTotalTheme
 import com.at.apuestatotal.presentation.ui.theme.TextStyles
 import com.example.ui.theme.Grays
 import com.example.ui.theme.Primary
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dagger.hilt.android.qualifiers.ActivityContext
+import com.example.ui.theme.Secondary
 import kotlinx.coroutines.launch
 
 
@@ -97,6 +81,16 @@ fun MainMenuScreen() {
     val itemsOptionDrawer by remember {
         mutableStateOf(
             listOf(
+                OptionDrawer(
+                    "EL TÍO TE TRAE",
+                    listOf(
+                        ItemOptionDrawer(
+                            "Football Studio",
+                            type = TOP_1,
+                            colorTab = Secondary.RedSecondary
+                        ), ItemOptionDrawer("Poker", type = NUEVO, colorTab = Secondary.RedSecondary)
+                    )
+                ),
                 OptionDrawer(
                     "APUESTA TOTAL",
                     listOf(
@@ -150,7 +144,7 @@ fun MainMenuScreen() {
             )
         )
     }
-    var indexSelected by remember { mutableStateOf<Int?>(null) }
+    var indexSelected by remember { mutableStateOf<Int?>(0) }
 
     drawerState.let {
         //ToggleStatusBar(drawerState.isClosed)
@@ -222,12 +216,13 @@ fun MainMenuScreen() {
 
                     LazyColumn(
                         modifier = Modifier
-                            .heightIn( max= 1500.dp)
+                            .heightIn(max = 1500.dp)
                             .fillMaxWidth()
                     ) {
 
                         itemsIndexed(itemsOptionDrawer) { index, optionDrawer ->
-                            var isOpen by remember { mutableStateOf(false) }
+                            var isOpen by remember { mutableStateOf(index == 0) }
+                            Log.e("open", isOpen.toString() + optionDrawer.nombre)
 
                             val rotationAngle by animateFloatAsState(
                                 targetValue = if (isOpen) 180f else 0f, // Gira de 0 a 180 grados
@@ -260,7 +255,7 @@ fun MainMenuScreen() {
 
                                 Text(
                                     optionDrawer.nombre,
-                                    style = TextStyles.Heading.h2,
+                                    style = TextStyles.Heading.h3,
                                     color = if (!isOpen) Color.Unspecified else Primary.White
                                 )
 
@@ -272,7 +267,29 @@ fun MainMenuScreen() {
                                 )
 
                             }
+                            var alpha by remember { mutableStateOf(0f) } // Estado para la transparencia
+
+// Animación para actualizar el valor de alpha cuando isOpen cambia a true
+                            LaunchedEffect(isOpen) {
+                                if (isOpen) {
+                                    alpha = 0f // Reinicia a 0f cuando se abre
+                                    animate(
+                                        initialValue = 0f,
+                                        targetValue = 1f,
+                                        animationSpec = tween(
+                                            durationMillis = 500, // Duración de la animación
+                                            easing = LinearOutSlowInEasing
+                                        )
+                                    ) { value, _ ->
+                                        alpha = value
+                                    }
+                                } else {
+                                    alpha = 0f // Opcional: Ocultar de nuevo si es necesario
+                                }
+                            }
+
                             if (isOpen) {
+                                Spacer(modifier = Modifier.height(7.dp))
                                 optionDrawer.list.forEach { item ->
                                     Row(
                                         modifier = Modifier
@@ -283,19 +300,40 @@ fun MainMenuScreen() {
                                             .background(color = Color.Unspecified)
                                             .clickable { }
                                             .padding(horizontal = 15.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        horizontalArrangement = Arrangement.Start,
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
 
                                         Text(
-                                            item.nombre.uppercase(),
+                                            modifier = Modifier.alpha(alpha),
+                                            text = item.nombre.uppercase(),
                                             style = TextStyles.Heading.h3,
                                             fontWeight = FontWeight.Normal
                                         )
 
+                                        if (!item.type.isNullOrEmpty()) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .padding(start = 5.dp)
+                                                    .clip(RoundedCornerShape(5.dp))
+                                                    .background(item.colorTab ?: Color.Unspecified)
+                                            ) {
+
+                                                Text(
+                                                    modifier = Modifier.padding(3.dp),
+                                                    text = item.type,
+                                                    style = TextStyles.Button.text3,
+                                                    fontSize = 11.sp,
+                                                    color = Primary.White
+                                                )
+
+                                            }
+                                        }
+
 
                                     }
                                 }
+                                // Spacer(modifier = Modifier.height(7.dp))
 
                             }
 
@@ -344,9 +382,10 @@ fun MainMenuScreen() {
                                 },
                                 contentScale = ContentScale.FillBounds // Escalado de la imagen cargada
                             )
+                            Spacer(modifier = Modifier.padding(vertical = 5.dp))
                             Text(
                                 "Sobrino participa en nuestro sorteo para el circo MESSI 10",
-                                style = TextStyles.Body.textCard1
+                                style = TextStyles.Body.paragraph2
                             )
                         }
                     }

@@ -57,6 +57,7 @@ import com.at.apuestatotal.presentation.screens.mainMenu.MainMenuScreen
 import com.at.apuestatotal.presentation.screens.mainMenu.MainMenuViewModel
 import com.at.apuestatotal.presentation.ui.theme.ApuestaTotalTheme
 import com.at.apuestatotal.presentation.ui.theme.TextStyles
+import com.example.ui.theme.Grays
 import com.example.ui.theme.Primary
 import com.example.ui.theme.Secondary
 import kotlinx.coroutines.flow.StateFlow
@@ -100,7 +101,7 @@ fun MainMenuContent(
                 .fillMaxWidth()
                 .height(200.dp)
                 .clickable {
-                 //   mainMenuViewModel.getHomeCentralBanner()
+                    //   mainMenuViewModel.getHomeCentralBanner()
                 },
             model = ImageRequest.Builder(context)
                 .data(linkPrincipal)
@@ -553,9 +554,13 @@ fun MainMenuContent(
 
         }
 
+
+
+
+
         Spacer(modifier = Modifier.height(30.dp))
 
-         TextoAnimado(mainMenuViewModel.textoMostrado)
+        TextoAnimado(mainMenuViewModel.textoMostrado)
 
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -563,31 +568,31 @@ fun MainMenuContent(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-           //     .height(140.dp),
+            //     .height(140.dp),
 
         ) {
 
             items(listPaymentMethodsBanner) {
                 Spacer(modifier = Modifier.width(10.dp))
 
-                    val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+                val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
 
-                    AsyncImage(
-                        modifier = Modifier.widthIn(max= 200.dp).heightIn(max = 150.dp).clickable {  },
-                        model = ImageRequest.Builder(context)
-                            .data(link)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "Imagen de banner",
-                        imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
-                        error = painterResource(R.drawable.master),
-                        contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
-                      //  modifier = Modifier.fillMaxSize()
-                    )
-
-
-
+                AsyncImage(
+                    modifier = Modifier
+                        .widthIn(max = 200.dp)
+                        .heightIn(max = 150.dp)
+                        .clickable { },
+                    model = ImageRequest.Builder(context)
+                        .data(link)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Imagen de banner",
+                    imageLoader = imageLoader,
+                    placeholder = painterResource(R.drawable.ap_logo),
+                    error = painterResource(R.drawable.master),
+                    contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
+                    //  modifier = Modifier.fillMaxSize()
+                )
 
 
             }
@@ -597,20 +602,53 @@ fun MainMenuContent(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-       /* Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Secondary.RedSecondary, fontWeight = FontWeight.SemiBold)) {
-                    append("Apuesta Total ¡Para ganar, hay que creer! ")
-                }
-                withStyle(style = SpanStyle(color = Primary.Black)) {
-                    append("Juega y gana mientras disfrutas de tus deportes favoritos. Todas las ligas y eventos deportivos más importantes del mundo, los mejores mercados de apuestas y ofertas de cuotas, apuestas prematch y en vivo, juegos virtuales, casino online y en vivo, y mucho más.")
-                }
-            },
-            textAlign = TextAlign.Center,
-            style = TextStyles.Body.textCard2
-        )*/
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+                .background(Color(0xFF292929))
+        ) {
+
+
+        }
+
+        /*Box(modifier = Modifier.fillMaxWidth()) {
+
+            Image(painter = painterResource(R.drawable.greyfade), "")
+
+            Column {
+
+
+            }
+
+
+        }*/
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+                .background(Grays.blackBackGround)
+        ) {
+
+
+        }
+
+
+        /* Spacer(modifier = Modifier.height(10.dp))
+         Text(
+             modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
+             text = buildAnnotatedString {
+                 withStyle(style = SpanStyle(color = Secondary.RedSecondary, fontWeight = FontWeight.SemiBold)) {
+                     append("Apuesta Total ¡Para ganar, hay que creer! ")
+                 }
+                 withStyle(style = SpanStyle(color = Primary.Black)) {
+                     append("Juega y gana mientras disfrutas de tus deportes favoritos. Todas las ligas y eventos deportivos más importantes del mundo, los mejores mercados de apuestas y ofertas de cuotas, apuestas prematch y en vivo, juegos virtuales, casino online y en vivo, y mucho más.")
+                 }
+             },
+             textAlign = TextAlign.Center,
+             style = TextStyles.Body.textCard2
+         )*/
 
 
     }
