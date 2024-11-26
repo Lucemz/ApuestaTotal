@@ -8,6 +8,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,23 +20,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,11 +60,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.BeyondBoundsLayout
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
@@ -64,6 +86,7 @@ import com.at.apuestatotal.domain.model.optionNavigationDrawer.ItemOptionDrawer
 import com.at.apuestatotal.domain.model.optionNavigationDrawer.NUEVO
 import com.at.apuestatotal.domain.model.optionNavigationDrawer.OptionDrawer
 import com.at.apuestatotal.domain.model.optionNavigationDrawer.TOP_1
+import com.at.apuestatotal.presentation.components.ATTopbarPostLogin
 import com.at.apuestatotal.presentation.components.ATTopbarPreLogin
 import com.at.apuestatotal.presentation.screens.mainMenu.components.MainMenuContent
 import com.at.apuestatotal.presentation.ui.theme.ApuestaTotalTheme
@@ -77,6 +100,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainMenuScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState2 = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    var gestureEnable by remember { mutableStateOf(drawerState2.isClosed) }
+    var isLogged by remember { mutableStateOf(false) }
+    drawerState2.isClosed.let {
+        gestureEnable = it
+    }
+
+
     val coroutineScope = rememberCoroutineScope()
     val itemsOptionDrawer by remember {
         mutableStateOf(
@@ -88,7 +120,8 @@ fun MainMenuScreen() {
                             "Football Studio",
                             type = TOP_1,
                             colorTab = Secondary.RedSecondary
-                        ), ItemOptionDrawer("Poker", type = NUEVO, colorTab = Secondary.RedSecondary)
+                        ),
+                        ItemOptionDrawer("Poker", type = NUEVO, colorTab = Secondary.RedSecondary)
                     )
                 ),
                 OptionDrawer(
@@ -146,19 +179,13 @@ fun MainMenuScreen() {
     }
     var indexSelected by remember { mutableStateOf<Int?>(0) }
 
-    drawerState.let {
-        //ToggleStatusBar(drawerState.isClosed)
-        //SetStatusBarIconsColor(!drawerState.isClosed)
-    }
-
-
-
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = gestureEnable,
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f), drawerTonalElevation = 0.dp,
+                    .fillMaxWidth(0.90f), drawerTonalElevation = 0.dp,
                 drawerContainerColor = Color.White,
                 drawerShape = RectangleShape
             ) {
@@ -197,19 +224,29 @@ fun MainMenuScreen() {
                                 contentDescription = "icon close"
                             )
                         }
-                        FilledIconButton(
-                            shape = RoundedCornerShape(15.dp),
-                            colors = IconButtonDefaults.iconButtonColors(containerColor = Grays.Gray7),
-                            content = {
-                                Icon(
-                                    modifier = Modifier,
-                                    //  .padding(end = 10.dp),
-                                    imageVector = Icons.Filled.Close,
-                                    contentDescription = ""
-                                )
-                            },
-                            onClick = { coroutineScope.launch { drawerState.close() } })
 
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+                            /*Icon(
+                                painter = painterResource(R.drawable.baseline_support_agent_24),
+                                contentDescription = ""
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+*/
+                            FilledIconButton(
+                                shape = RoundedCornerShape(15.dp),
+                                colors = IconButtonDefaults.iconButtonColors(containerColor = Grays.Gray7),
+                                content = {
+                                    Icon(
+                                        modifier = Modifier,
+                                        //  .padding(end = 10.dp),
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = ""
+                                    )
+                                },
+                                onClick = { coroutineScope.launch { drawerState.close() } })
+
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(40.dp))
@@ -293,7 +330,7 @@ fun MainMenuScreen() {
                                 optionDrawer.list.forEach { item ->
                                     Row(
                                         modifier = Modifier
-                                            .padding(vertical = 3.dp)
+                                            .padding(vertical = 2.dp)
                                             .fillMaxWidth()
                                             .clip(RoundedCornerShape(10.dp))
                                             .height(44.dp)
@@ -339,7 +376,7 @@ fun MainMenuScreen() {
 
 
 
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(7.dp))
                         }
 
                         item {
@@ -395,21 +432,291 @@ fun MainMenuScreen() {
             }
         }
     ) {
-        Scaffold(
 
-            topBar = {
-                ATTopbarPreLogin(
-                    onIconClick = {
-                        coroutineScope.launch {
-                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+
+            ModalNavigationDrawer(
+                gesturesEnabled = !gestureEnable,
+                drawerState = drawerState2,
+                drawerContent = {
+                    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                        ModalDrawerSheet(
+                            modifier = Modifier
+                                .fillMaxWidth(0.90f),
+                            drawerTonalElevation = 0.dp,
+                            drawerContainerColor = Color.White,
+                            drawerShape = RectangleShape
+                        ) {
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 10.dp, horizontal = 20.dp)
+                            ) {
+
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+
+
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+
+                                        /*Icon(
+                                            painter = painterResource(R.drawable.baseline_support_agent_24),
+                                            contentDescription = ""
+                                        )
+                                        Spacer(modifier = Modifier.width(10.dp))
+            */
+                                        FilledIconButton(
+                                            shape = RoundedCornerShape(15.dp),
+                                            colors = IconButtonDefaults.iconButtonColors(
+                                                containerColor = Grays.Gray7
+                                            ),
+                                            content = {
+                                                Icon(
+                                                    modifier = Modifier,
+                                                    //  .padding(end = 10.dp),
+                                                    imageVector = Icons.Filled.Close,
+                                                    contentDescription = ""
+                                                )
+                                            },
+                                            onClick = { coroutineScope.launch { drawerState2.close() } })
+
+                                    }
+
+                                    Row(
+                                        modifier = Modifier
+                                            .clickable { coroutineScope.launch { drawerState2.close() } },
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_at_mini),
+                                            contentDescription = "Icono at",
+                                            modifier = Modifier
+                                                .size(42.dp)
+                                        )
+
+
+                                        /*
+                                                                                Icon(
+                                                                                    modifier = Modifier
+                                                                                        .padding(start = 5.dp)
+                                                                                        .rotate(90f),
+                                                                                    painter = painterResource(R.drawable.ic_arrow_rounded),
+                                                                                    tint = Grays.Gray9,
+                                                                                    contentDescription = "icon close"
+                                                                                )*/
+                                    }
+
+                                }
+
+
+                                Spacer(modifier = Modifier.padding(vertical = 15.dp))
+
+                                var textEmail by remember { mutableStateOf<String>("") }
+
+                                TextField(
+                                    modifier = Modifier
+                                        .border(
+                                            1.dp,
+                                            color = Color.Gray,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .fillMaxWidth(),
+                                    value = textEmail,
+                                    onValueChange = { textEmail = it },
+                                    label = { Text("Email") },
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = TextFieldDefaults.colors(
+                                        unfocusedContainerColor = Color.Transparent,
+                                        focusedIndicatorColor = Color.Transparent,
+                                        unfocusedIndicatorColor = Color.Transparent,
+                                        focusedContainerColor = Color.Transparent
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.padding(vertical = 10.dp))
+                                var textPassword by remember { mutableStateOf<String>("") }
+                                TextField(
+                                    modifier = Modifier
+                                        .border(
+                                            1.dp,
+                                            color = Color.Black,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .fillMaxWidth(),
+                                    value = textPassword,
+                                    onValueChange = { textPassword = it },
+                                    label = { Text("Contraseña") },
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = TextFieldDefaults.colors(
+                                        unfocusedContainerColor = Color.Transparent,
+                                        focusedIndicatorColor = Color.Transparent,
+                                        unfocusedIndicatorColor = Color.Transparent,
+                                        focusedContainerColor = Color.Transparent
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.padding(vertical = 15.dp))
+                                Button(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(48.dp),
+                                    content = {
+                                        Text(
+                                            "Iniciar sesíon",
+                                            style = TextStyles.Button.text1
+                                        )
+                                    },
+                                    onClick = {
+                                        isLogged = true
+                                        coroutineScope.launch { drawerState2.close() }
+
+                                    },
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                Spacer(modifier = Modifier.padding(vertical = 5.dp))
+                                val annotatedText = buildAnnotatedString {
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = Color.Black,
+                                            textDecoration = TextDecoration.None
+                                        )
+                                    ) {
+                                        append("¿Olvidaste tu contraseña? ")
+                                    }
+
+                                    pushStringAnnotation(
+                                        tag = "CLICKABLE",
+                                        annotation = "click_action"
+                                    )
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = Color.Red,
+                                            textDecoration = TextDecoration.Underline
+                                        )
+                                    ) {
+                                        append("Haz click aquí")
+                                    }
+                                    pop()
+
+                                }
+
+                                ClickableText(
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    text = annotatedText,
+                                    onClick = { offset ->
+                                        annotatedText.getStringAnnotations(
+                                            tag = "CLICKABLE",
+                                            start = offset,
+                                            end = offset
+                                        )
+                                            .firstOrNull()?.let {
+                                                println("Texto clickeado: ${it.item}")
+                                                // Aquí puedes manejar la acción deseada (navegación, etc.)
+                                            }
+                                    },
+                                    style = TextStyles.Body.paragraph2
+                                )
+                                Spacer(modifier = Modifier.padding(vertical = 15.dp))
+
+                                Button(
+                                    colors = ButtonDefaults.buttonColors(containerColor = Primary.Black),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(48.dp),
+                                    content = {
+                                        Text(
+                                            "¡Registrate aqui!",
+                                            style = TextStyles.Button.text1
+                                        )
+                                    },
+                                    onClick = {},
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                Spacer(modifier = Modifier.padding(vertical = 5.dp))
+
+                                Text(
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    text = "¿No tienes una cuenta Sobrin@ \n ¿Que esperas?",
+                                    style = TextStyles.Body.paragraph2
+                                )
+                                Spacer(modifier = Modifier.height(320.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().clickable {  },
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_support_agent_24),
+                                        contentDescription = ""
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+
+                                    Text("¿Necesitas ayuda?")
+
+                                }
+
+
+                            }
+
+
                         }
                     }
-                )
-            },
-            content = { paddingValues ->
-                MainMenuContent(paddingValues)
+
+                }
+            ) {
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                    Scaffold(
+
+                        topBar = {
+                            if (!isLogged) {
+                                ATTopbarPreLogin(
+                                    onIconClick = {
+                                        coroutineScope.launch {
+                                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+                                        }
+                                    },
+                                    onLoginClick = {
+                                        coroutineScope.launch {
+                                            if (drawerState2.isClosed) drawerState2.open() else drawerState2.close()
+                                        }
+                                    }
+                                )
+                            } else {
+                                ATTopbarPostLogin(
+                                    onIconClick = {
+                                        coroutineScope.launch {
+                                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+                                        }
+                                    },
+                                    onLoginClick = {
+                                        coroutineScope.launch {
+                                            if (drawerState2.isClosed) drawerState2.open() else drawerState2.close()
+                                        }
+                                    }
+                                )
+                            }
+
+
+                        },
+                        content = { paddingValues ->
+                            MainMenuContent(paddingValues)
+                        }
+                    )
+                }
+
+
             }
-        )
+        }
+
+
     }
 
 }

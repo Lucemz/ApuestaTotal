@@ -33,10 +33,11 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     fun login() {
         viewModelScope.launch {
             val user = User("", email, password)
-
             loginResponseState = loginUseCase(user)
         }
     }
+
+
 
 
 }

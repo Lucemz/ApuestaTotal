@@ -74,7 +74,9 @@ fun MainMenuContent(
     val listCasinoLiveBanner = mainMenuViewModel.listBannerHomeCasinoLive
     val listJackpotBanner = mainMenuViewModel.listBannerHomeJackpots
     val listPromotionBanner = mainMenuViewModel.listBannerHomePromotions
-    val listPaymentMethodsBanner = mainMenuViewModel.listBannerHomePaymentMethods
+    val listPaymentMethodsBanner = mainMenuViewModel.listBannerFooterPaymentMethods
+    val listStampBanner = mainMenuViewModel.listBannerFooterStamps
+    val listSponsorBanner = mainMenuViewModel.listBannerFooterSponsor
 
 
     val context = LocalContext.current
@@ -408,7 +410,7 @@ fun MainMenuContent(
                         imageLoader = imageLoader,
                         placeholder = painterResource(R.drawable.ap_logo),
                         error = painterResource(R.drawable.master),
-                        contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
+                        contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize()
                     )
 
@@ -476,6 +478,7 @@ fun MainMenuContent(
 
 
                 }
+
 
 
             }
@@ -563,44 +566,10 @@ fun MainMenuContent(
         TextoAnimado(mainMenuViewModel.textoMostrado)
 
 
-        Spacer(modifier = Modifier.height(10.dp))
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-            //     .height(140.dp),
-
-        ) {
-
-            items(listPaymentMethodsBanner) {
-                Spacer(modifier = Modifier.width(10.dp))
-
-                val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
-
-                AsyncImage(
-                    modifier = Modifier
-                        .widthIn(max = 200.dp)
-                        .heightIn(max = 150.dp)
-                        .clickable { },
-                    model = ImageRequest.Builder(context)
-                        .data(link)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Imagen de banner",
-                    imageLoader = imageLoader,
-                    placeholder = painterResource(R.drawable.ap_logo),
-                    error = painterResource(R.drawable.master),
-                    contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
-                    //  modifier = Modifier.fillMaxSize()
-                )
+        Spacer(modifier = Modifier.height(20.dp))
 
 
-            }
 
-
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
 
         Column(
             modifier = Modifier
@@ -608,6 +577,126 @@ fun MainMenuContent(
                 .height(400.dp)
                 .background(Color(0xFF292929))
         ) {
+
+            Spacer(modifier = Modifier.height(10.dp))
+            LazyRow(
+                modifier = Modifier
+                    .height(150.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+                //     .height(140.dp),
+
+            ) {
+
+                items(listPaymentMethodsBanner) {
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(150.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                               // .widthIn(max = 200.dp)
+
+                                //.heightIn(max = 150.dp)
+                                .clickable { },
+                            model = ImageRequest.Builder(context)
+                                .data(link)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Imagen de banner",
+                            imageLoader = imageLoader,
+                            placeholder = painterResource(R.drawable.ap_logo),
+                            error = painterResource(R.drawable.master),
+                            contentScale = ContentScale.FillWidth,
+                        )
+                    }
+
+                }
+            }
+            LazyRow(
+                modifier = Modifier
+                    // .height(80.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+                //     .height(140.dp),
+
+            ) {
+
+                items(listStampBanner) {
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .width(160.dp)
+                            .height(85.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                                .clickable { },
+                            model = ImageRequest.Builder(context)
+                                .data(it)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Imagen de banner",
+                            imageLoader = imageLoader,
+                            placeholder = painterResource(R.drawable.ap_logo),
+                            error = painterResource(R.drawable.master),
+                            contentScale = ContentScale.FillHeight, // Ajusta a Fit para no recortar
+                            //  modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    // val link = "https://www.apuestatotal.com${it.image}"
+
+
+                }
+            }
+            LazyRow(
+                modifier = Modifier
+                    .height(120.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+                //     .height(140.dp),
+
+            ) {
+
+                items(listSponsorBanner) {
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    //  val link = "https://www.apuestatotal.com${it.bannerConfig.image}"
+                    Image(
+                        modifier = Modifier.fillMaxHeight(),
+                        painter = painterResource(it),
+                        contentDescription = ""
+                    )
+                    /*  AsyncImage(
+                          modifier = Modifier
+                              .widthIn(max = 200.dp)
+                              .heightIn(max = 150.dp)
+                              .clickable { },
+                          model = ImageRequest.Builder(context)
+                              .data(link)
+                              .crossfade(true)
+                              .build(),
+                          contentDescription = "Imagen de banner",
+                          imageLoader = imageLoader,
+                          placeholder = painterResource(R.drawable.ap_logo),
+                          error = painterResource(R.drawable.master),
+                          contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
+                          //  modifier = Modifier.fillMaxSize()
+                      )*/
+                }
+            }
 
 
         }
@@ -630,7 +719,6 @@ fun MainMenuContent(
                 .height(400.dp)
                 .background(Grays.blackBackGround)
         ) {
-
 
         }
 

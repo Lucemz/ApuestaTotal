@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.at.apuestatotal.R
 import com.at.apuestatotal.domain.model.ResponseState
 import com.at.apuestatotal.domain.model.banner.Banner
 import com.at.apuestatotal.domain.model.casino.LobbyCasino
@@ -37,7 +38,9 @@ class MainMenuViewModel @Inject constructor(
     var listBannerHomeJackpots by mutableStateOf<List<LobbyCasino>>(emptyList())
     var listBannerHomeMission by mutableStateOf<List<Banner>>(emptyList())
     var listBannerHomePromotions by mutableStateOf<List<LobbyPromotion>>(emptyList())
-    var listBannerHomePaymentMethods by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerFooterPaymentMethods by mutableStateOf<List<Banner>>(emptyList())
+    var listBannerFooterStamps by mutableStateOf<List<String>>(emptyList())
+    var listBannerFooterSponsor by mutableStateOf<List<Int>>(emptyList())
     var listOptionsNavigationDrawer by mutableStateOf<List<OptionDrawer>>(emptyList())
 
     private val listWordAt: List<String> = listOf(
@@ -67,6 +70,8 @@ class MainMenuViewModel @Inject constructor(
         getHomePromotionBanner()
         getHomePaymentMethodsBanner()
         mostrarFrasesAnimadas()
+        getHomeFooterStampsBanner()
+        getHomeFooterSponsorBanner()
     }
 
     fun autoChangeHomeTop() {
@@ -220,12 +225,35 @@ class MainMenuViewModel @Inject constructor(
         viewModelScope.launch {
             val response = bannerHomeAggregate.getAllHomePaymentMethods()
             if (response is ResponseState.Success) {
-                listBannerHomePaymentMethods = response.data
+                listBannerFooterPaymentMethods = response.data
             } else {
                 Log.e("error", (response as ResponseState.Error).errorInfo.toString())
             }
         }
     }
+
+    private fun getHomeFooterStampsBanner() {
+        //viewModelScope.launch {
+        listBannerFooterStamps = listOf(
+            "https://www.apuestatotal.com/_next/static/media/libro.fe81189f.webp",
+            "https://www.apuestatotal.com/_next/static/media/certification.4e804dff.png",
+            "https://5a091b68-8b84-43e4-b94f-9caaddd58204.seals-xcm.certria.com/sealassets/d9d8b19238c3e3c754b7584cd0ed6b42-www.apuestatotal.com-9a8de541d07ceeb894f60b4fa1f7810a53f0b2275ce1debf476f6839d6d2eb6fbb519c50da3e7f285be6309959144441-c2VhbC5wbmc%3D?status=valid",
+            "https://www.apuestatotal.com/_next/static/media/certification-gcb.d81f4ccd.png"
+        )
+        //}
+    }
+
+    private fun getHomeFooterSponsorBanner() {
+        //viewModelScope.launch {
+        listBannerFooterSponsor = listOf(
+            R.drawable.logo_alianza_lima,
+            R.drawable.logo_u,
+            R.drawable.logo_sport_boys,
+            R.drawable.logo_cesar_vallejo,
+        )
+        //}
+    }
+
 
     private fun getOptionsNavigationDrawer() {
         val listOptionsNavigationDrawer = listOf(
