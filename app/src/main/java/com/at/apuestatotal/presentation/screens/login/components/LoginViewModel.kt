@@ -7,12 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.at.apuestatotal.domain.model.ErrorInfo
 import com.at.apuestatotal.domain.model.ResponseState
-import com.at.apuestatotal.domain.model.login.User
+import com.at.apuestatotal.domain.model.login.UserAPI
 import com.at.apuestatotal.domain.useCase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
@@ -32,8 +31,8 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     fun login() {
         viewModelScope.launch {
-            val user = User("", email, password)
-            loginResponseState = loginUseCase(user)
+            val userAPI = UserAPI("", email, password)
+            loginResponseState = loginUseCase(userAPI)
         }
     }
 

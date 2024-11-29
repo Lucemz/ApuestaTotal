@@ -2,15 +2,15 @@ package com.at.apuestatotal.domain.useCase.login
 
 import com.at.apuestatotal.domain.model.ErrorInfo
 import com.at.apuestatotal.domain.model.ResponseState
-import com.at.apuestatotal.domain.model.login.User
+import com.at.apuestatotal.domain.model.login.UserAPI
 import com.at.apuestatotal.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(private val authRepository: AuthRepository) {
 
-    suspend operator fun invoke(user: User): ResponseState<Boolean> {
+    suspend operator fun invoke(userAPI: UserAPI): ResponseState<Boolean> {
 
-        if (user.email.isEmpty() || user.password.isEmpty()) {
+        if (userAPI.email.isEmpty() || userAPI.password.isEmpty()) {
             return ResponseState.Error(
                 ErrorInfo(
                     titulo = "Error de Validación",
@@ -20,7 +20,7 @@ class LoginUseCase @Inject constructor(private val authRepository: AuthRepositor
         }
 
 
-        if (!isValidEmail(user.email)) {
+        if (!isValidEmail(userAPI.email)) {
             return ResponseState.Error(
                 ErrorInfo(
                     titulo = "Correo Inválido",
@@ -29,12 +29,12 @@ class LoginUseCase @Inject constructor(private val authRepository: AuthRepositor
             )
         }
 
-        val response = authRepository.loginUserViaApi(user)
+        val response = authRepository.loginUserViaApi(userAPI)
 
         return when (response) {
             is ResponseState.Success -> {
 
-                if (response.data.email != user.email) {
+                if (response.data.email != userAPI.email) {
                     ResponseState.Error(
                         ErrorInfo(
                             titulo = "Usuario Incorrecto",
@@ -42,16 +42,16 @@ class LoginUseCase @Inject constructor(private val authRepository: AuthRepositor
                         )
                     )
                 } else {
-                    if (response.data.password == user.password) {
+                   // if (response.data. == userAPI.password) {
                         ResponseState.Success(true)
-                    } else {
+                 //   } else {
                         ResponseState.Error(
                             ErrorInfo(
                                 titulo = "Contraseña Incorrecta",
                                 descripcion = "La contraseña ingresada es incorrecta"
                             )
                         )
-                    }
+                  //  }
                 }
 
 

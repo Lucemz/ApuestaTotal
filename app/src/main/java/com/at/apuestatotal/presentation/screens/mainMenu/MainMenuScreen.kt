@@ -2,6 +2,7 @@ package com.at.apuestatotal.presentation.screens.mainMenu
 
 import android.util.Log
 import android.view.animation.OvershootInterpolator
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
@@ -10,6 +11,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +29,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -70,6 +74,10 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
@@ -107,6 +115,10 @@ fun MainMenuScreen() {
     drawerState2.isClosed.let {
         gestureEnable = it
     }
+
+    BackHandler(enabled = true, onBack = {
+
+    })
 
 
     val coroutineScope = rememberCoroutineScope()
@@ -291,7 +303,8 @@ fun MainMenuScreen() {
                             ) {
 
                                 Text(
-                                    optionDrawer.nombre,
+                                    modifier = Modifier.weight(1f),
+                                    text = optionDrawer.nombre,
                                     style = TextStyles.Heading.h3,
                                     color = if (!isOpen) Color.Unspecified else Primary.White
                                 )
@@ -304,24 +317,23 @@ fun MainMenuScreen() {
                                 )
 
                             }
-                            var alpha by remember { mutableStateOf(0f) } // Estado para la transparencia
+                            var alpha by remember { mutableStateOf(0f) }
 
-// Animación para actualizar el valor de alpha cuando isOpen cambia a true
                             LaunchedEffect(isOpen) {
                                 if (isOpen) {
-                                    alpha = 0f // Reinicia a 0f cuando se abre
+                                    alpha = 0f
                                     animate(
                                         initialValue = 0f,
                                         targetValue = 1f,
                                         animationSpec = tween(
-                                            durationMillis = 500, // Duración de la animación
+                                            durationMillis = 500,
                                             easing = LinearOutSlowInEasing
                                         )
                                     ) { value, _ ->
                                         alpha = value
                                     }
                                 } else {
-                                    alpha = 0f // Opcional: Ocultar de nuevo si es necesario
+                                    alpha = 0f
                                 }
                             }
 
@@ -519,14 +531,22 @@ fun MainMenuScreen() {
 
                                 var textEmail by remember { mutableStateOf<String>("") }
 
+                                val color by remember { mutableStateOf(Color.Cyan) }
+
+                                val interactionSource = remember { MutableInteractionSource() }
+                                val isFocused by interactionSource.collectIsFocusedAsState()
+
+                                val containerColor = if (isFocused) Secondary.Blue else Color.Gray
+
                                 TextField(
                                     modifier = Modifier
                                         .border(
                                             1.dp,
-                                            color = Color.Gray,
+                                            color = containerColor,
                                             shape = RoundedCornerShape(10.dp)
                                         )
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .height(56.dp),
                                     value = textEmail,
                                     onValueChange = { textEmail = it },
                                     label = { Text("Email") },
@@ -535,20 +555,28 @@ fun MainMenuScreen() {
                                         unfocusedContainerColor = Color.Transparent,
                                         focusedIndicatorColor = Color.Transparent,
                                         unfocusedIndicatorColor = Color.Transparent,
-                                        focusedContainerColor = Color.Transparent
-                                    )
+                                        focusedContainerColor = Color.Transparent,
+                                        focusedLabelColor = containerColor,
+                                        cursorColor = containerColor
+                                    ), interactionSource = interactionSource, singleLine = true
                                 )
 
                                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                                 var textPassword by remember { mutableStateOf<String>("") }
+                                val interactionSource2 = remember { MutableInteractionSource() }
+                                val isFocused2 by interactionSource2.collectIsFocusedAsState()
+
+                                val containerColor2 = if (isFocused2) Secondary.Blue else Color.Gray
+                                var hideText by remember { mutableStateOf(false) }
                                 TextField(
                                     modifier = Modifier
                                         .border(
                                             1.dp,
-                                            color = Color.Black,
+                                            color = containerColor2,
                                             shape = RoundedCornerShape(10.dp)
                                         )
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .height(56.dp),
                                     value = textPassword,
                                     onValueChange = { textPassword = it },
                                     label = { Text("Contraseña") },
@@ -557,8 +585,30 @@ fun MainMenuScreen() {
                                         unfocusedContainerColor = Color.Transparent,
                                         focusedIndicatorColor = Color.Transparent,
                                         unfocusedIndicatorColor = Color.Transparent,
-                                        focusedContainerColor = Color.Transparent
-                                    )
+                                        focusedContainerColor = Color.Transparent,
+                                        focusedLabelColor = containerColor2,
+                                        cursorColor = containerColor2
+                                    ),
+                                    interactionSource = interactionSource2,
+                                    trailingIcon = {
+                                        Icon(
+
+                                            painter = if (hideText) painterResource(id = R.drawable.ic_eye_password_outline) else painterResource(
+                                                id = R.drawable.ic_eye_slash_outline_regular
+                                            ),
+                                            contentDescription = "Mostrar/Ocultar contraseña",
+                                            modifier = Modifier
+                                                .padding(end = 20.dp)
+                                                .clickable {
+                                                    hideText = !hideText
+                                                }
+                                        )
+                                    },
+                                    visualTransformation = if (!hideText) PasswordVisualTransformation() else VisualTransformation.None,
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Password,
+                                        imeAction = ImeAction.Next
+                                    ),
                                 )
 
                                 Spacer(modifier = Modifier.padding(vertical = 15.dp))
@@ -648,15 +698,25 @@ fun MainMenuScreen() {
                                 )
                                 Spacer(modifier = Modifier.height(320.dp))
                                 Row(
-                                    modifier = Modifier.fillMaxWidth().clickable {  },
+                                    modifier = Modifier,
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.Start
                                 ) {
 
-                                    Icon(
-                                        painter = painterResource(R.drawable.baseline_support_agent_24),
-                                        contentDescription = ""
-                                    )
+                                    FilledIconButton(
+                                        shape = RoundedCornerShape(15.dp),
+                                        colors = IconButtonDefaults.iconButtonColors(
+                                            containerColor = Grays.Gray7
+                                        ),
+                                        content = {
+                                            Icon(
+                                                painter = painterResource(R.drawable.baseline_support_agent_24),
+                                                contentDescription = ""
+                                            )
+                                        },
+                                        onClick = { })
+
+
                                     Spacer(modifier = Modifier.width(5.dp))
 
                                     Text("¿Necesitas ayuda?")

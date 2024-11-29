@@ -2,6 +2,7 @@ package com.at.apuestatotal.di
 
 import com.at.apuestatotal.core.DynamicBaseUrlInterceptor
 import com.at.apuestatotal.core.RetrofitClient
+import com.at.apuestatotal.data.remote.APILogin
 import com.at.apuestatotal.data.remote.APIService
 import com.at.apuestatotal.presentation.utils.CompleteFieldAdapterFactory
 import com.at.apuestatotal.presentation.utils.FunctionApi
@@ -23,7 +24,6 @@ object NetworkModule {
     @Singleton
     fun provideDynamicBaseUrlInterceptor(): DynamicBaseUrlInterceptor {
         val interceptor = DynamicBaseUrlInterceptor()
-        runBlocking { interceptor.initialize() }
         return interceptor
     }
 
@@ -37,6 +37,11 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): APIService {
         return retrofit.create(APIService::class.java)
     }
+    @Provides
+    fun provideApiServiceLogin(retrofit: Retrofit): APILogin {
+        return retrofit.create(APILogin::class.java)
+    }
+
 
     @Provides
     fun provideCompleteFieldAdapterFactory(): CompleteFieldAdapterFactory {

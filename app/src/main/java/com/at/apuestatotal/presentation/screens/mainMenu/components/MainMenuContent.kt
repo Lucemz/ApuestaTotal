@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -111,7 +112,7 @@ fun MainMenuContent(
                 .build(),
             contentDescription = "Imagen de banner",
             imageLoader = imageLoader,
-            placeholder = painterResource(R.drawable.ap_logo),
+            placeholder = painterResource(R.drawable.greyfade),
             error = painterResource(R.drawable.master),
             contentScale = ContentScale.FillBounds,
         )
@@ -163,7 +164,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
                         modifier = Modifier.fillMaxSize()
@@ -223,7 +224,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
                         modifier = Modifier.fillMaxSize()
@@ -274,8 +275,8 @@ fun MainMenuContent(
                 Card(modifier = Modifier
                     .fillMaxHeight()
                     .width(220.dp)
-                    .shadow(1.dp, shape = RoundedCornerShape(10.dp))
-                    .clickable { }) {
+                    //.shadow(1.dp, shape = RoundedCornerShape(10.dp))
+                    .clickable { }, colors = CardDefaults.cardColors(containerColor = Color.Transparent) ) {
                     val link = "https://www.apuestatotal.com${it.cms.summaryImage}"
 
                     AsyncImage(
@@ -285,7 +286,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
                         modifier = Modifier.fillMaxSize()
@@ -347,7 +348,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize()
@@ -408,7 +409,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize()
@@ -470,7 +471,7 @@ fun MainMenuContent(
                             .build(),
                         contentDescription = "Imagen de banner",
                         imageLoader = imageLoader,
-                        placeholder = painterResource(R.drawable.ap_logo),
+                        placeholder = painterResource(R.drawable.greyfade),
                         error = painterResource(R.drawable.master),
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize()
@@ -540,7 +541,7 @@ fun MainMenuContent(
                                     .build(),
                                 contentDescription = "Imagen de banner",
                                 imageLoader = imageLoader,
-                                placeholder = painterResource(R.drawable.ap_logo),
+                                placeholder = painterResource(R.drawable.greyfade),
                                 error = painterResource(R.drawable.master),
                                 contentScale = ContentScale.FillBounds, // Ajusta a Fit para no recortar
                                 modifier = Modifier.fillMaxSize()
@@ -613,7 +614,7 @@ fun MainMenuContent(
                                 .build(),
                             contentDescription = "Imagen de banner",
                             imageLoader = imageLoader,
-                            placeholder = painterResource(R.drawable.ap_logo),
+                            placeholder = painterResource(R.drawable.greyfade),
                             error = painterResource(R.drawable.master),
                             contentScale = ContentScale.FillWidth,
                         )
@@ -650,7 +651,7 @@ fun MainMenuContent(
                                 .build(),
                             contentDescription = "Imagen de banner",
                             imageLoader = imageLoader,
-                            placeholder = painterResource(R.drawable.ap_logo),
+                            placeholder = painterResource(R.drawable.greyfade),
                             error = painterResource(R.drawable.master),
                             contentScale = ContentScale.FillHeight, // Ajusta a Fit para no recortar
                             //  modifier = Modifier.fillMaxSize()
@@ -690,7 +691,7 @@ fun MainMenuContent(
                               .build(),
                           contentDescription = "Imagen de banner",
                           imageLoader = imageLoader,
-                          placeholder = painterResource(R.drawable.ap_logo),
+                          placeholder = painterResource(R.drawable.greyfade),
                           error = painterResource(R.drawable.master),
                           contentScale = ContentScale.Fit, // Ajusta a Fit para no recortar
                           //  modifier = Modifier.fillMaxSize()
